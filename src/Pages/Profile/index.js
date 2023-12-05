@@ -5,35 +5,39 @@ import Axios  from "axios";
 
 import { GalleryIcon } from "../../assets/Icons";
 
-const Profile = ({email}) => {
+const Profile = ({user}) => {
   const [img, setImg] = useState();
   const [data, setdata] = useState([]);
 
 
+  // async function upload()
+  // {
+    
+  //   const res0 =await axios.get("https://slashapi-production.up.railway.app/get?"+ new URLSearchParams({
+  //     userAddress: address,}));
+  
+  //   if(res0.data[0]!=undefined)
+  //   {
+  
+  //     const data={userAddress:address, Name: name,image:preview}
+  //     const res =await axios.patch("https://slashapi-production.up.railway.app/user/"+ res0.data[0]._id,data);
+  
+  //       console.log(res)
+  //     alert("Profile is updated")
+  //   }
+  //   else{
+  //     const data={userAddress:address, Name: name,image:preview}
+  
+  //     const res =await axios.post("https://slashapi-production.up.railway.app/add",data)
+  //     alert("Profile is updated")
+  
+  //   }
+  
+  
+  
+  // }
 
-  async function HandleProfile(event) 
-  {
-    event.preventDefault(); // prevent the form from submitting
-    try{
 
-      const userData=await Axios.get("https://duapi-production.up.railway.app/getdatabymail?"+ new URLSearchParams({
-        Email: email,})
-      ).then((response)=>{
-        console.log(response);
-        setdata(response)
-        
-
-      })
-    }catch(e){
-      console.log(e.response.data);
-    }
-   
-
-  }
-
-  useEffect(()=>{
-
-  })
 
 
   return (
@@ -82,7 +86,7 @@ const Profile = ({email}) => {
                     type="text"
                     placeholder="Please enter your full name"
                     className="txt w-full"
-                    value={data}
+                    value={user.FName +" "+user.LName}
                     readOnly
                   />
                 </div>
@@ -92,27 +96,51 @@ const Profile = ({email}) => {
                     type="email"
                     placeholder="Please enter your email"
                     className="txt w-full"
-                    value={email}
-                  />
+                    value={user.Email }
+                    readOnly                  />
                 </div>
                 <div className="input-filed flex flex-col">
-                  <div className="i-lbl mb-2">Username</div>
+                  <div className="i-lbl mb-2">Wallet Address</div>
                   <input
                     type="text"
                     placeholder="Please enter your username"
                     className="txt w-full"
+                    value={user.userAddress }
+                    readOnly 
                   />
                 </div>
                 <div className="input-filed flex flex-col">
-                  <div className="i-lbl mb-2">Phone number</div>
+                  <div className="i-lbl mb-2">Referral Address</div>
                   <input
                     type="text"
                     placeholder="Please enter your phone number"
                     className="txt w-full"
+                    value={user.Ref_address }
+                    readOnly 
+                  />
+                </div>
+                <div className="input-filed flex flex-col">
+                  <div className="i-lbl mb-2">Country</div>
+                  <input
+                    type="text"
+                    placeholder="Please enter your phone number"
+                    className="txt w-full"
+                    value={user.Country }
+                    readOnly 
+                  />
+                </div>
+                <div className="input-filed flex flex-col">
+                  <div className="i-lbl mb-2">Phone Number</div>
+                  <input
+                    type="text"
+                    placeholder="Please enter your phone number"
+                    className="txt w-full"
+                    value={user.Phone}
+                    readOnly 
                   />
                 </div>
               </div>
-              <div className="row1 mt-5">
+              {/* <div className="row1 mt-5">
                 <div className="input-filed flex flex-col">
                   <div className="i-lbl mb-2">Phone number</div>
                   <textarea
@@ -121,7 +149,7 @@ const Profile = ({email}) => {
                     className="txt w-full min-h-[100px]"
                   />
                 </div>
-              </div>
+              </div> */}
             </div>
           </div>
         </div>

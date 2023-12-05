@@ -48,12 +48,7 @@ const { publicClient } = configureChains(chains, [w3mProvider({ projectId })])
 })
 const ethereumClient = new EthereumClient(wagmiConfig, chains)
 
-function shift_screen(_value)
-{
-  alert("hello screen ")
-  // set_email(_value)
-  
-}
+
 
   return (
     <div >
@@ -61,7 +56,7 @@ function shift_screen(_value)
     <WagmiConfig config={wagmiConfig}>
 
 
-     <Routing shift_screen={shift_screen}/>
+     <Routing />
 
         </WagmiConfig>
     <Web3Modal projectId={projectId} ethereumClient={ethereumClient} />

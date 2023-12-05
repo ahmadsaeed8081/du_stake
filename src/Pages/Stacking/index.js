@@ -59,7 +59,7 @@ const Stacking = (props) => {
   const [selectedAmount, setSelectedAmount] = useState(null);
   const [count, setcount] = useState(0);
 
-  const [regAddres, setregAddres] = useState("");
+  // const [regAddres, setregAddres] = useState("");
 
   const { chain } = useNetwork()
 
@@ -156,7 +156,6 @@ useEffect(()=>{
   if(count==0&& address!=undefined||count==0 && props.allInvestments.length>0)
   {
     set_DuBalance(props.DuBalance)
-    setregAddres(props.regAddress)
     console.log("hello sec box with stack"+props.regAddress);
       test()
       setcount(1);
@@ -313,16 +312,18 @@ useEffect(()=>{
 
   async function stake()
   {
+
+
     if(isDisconnected)
     {
       alert("kindly connect your wallet ");
       return;
     }
-    // if(regAddres!=address)
-    // {
-    //   alert("kindly change your crypto wallet to the Registered wallet")
-    //   return;
-    // }
+    if(props.regAddress.toLowerCase()!=address.toLowerCase())
+    {
+      alert("kindly change your crypto wallet to the Registered wallet")
+      return;
+    }
     if(stakeAmount==0 )
     {
       alert("kindly write amount to stake ");
@@ -355,11 +356,11 @@ useEffect(()=>{
       alert("kindly connect your wallet ");
       return;
     }
-    // if(regAddres!=address)
-    // {
-    //   alert("kindly change your crypto wallet to the Registered wallet")
-    //   return;
-    // }
+    if(props.regAddress.toLowerCase()!=address.toLowerCase())
+    {
+      alert("kindly change your crypto wallet to the Registered wallet")
+      return;
+    }
     console.log("object unstake "+choosed_Unstake_inv);
     // if(stakeAmount==0 )
     // {

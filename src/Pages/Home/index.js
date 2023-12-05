@@ -18,7 +18,6 @@ import { useAccount, useDisconnect } from 'wagmi'
 import { useContractReads,useContractRead ,useContractWrite, usePrepareContractWrite, useWaitForTransaction } from 'wagmi'
 const Main = ({totalReward,totalInvestment,Total_withdraw,totalEarning,directs,team,set_regAddress,regAddress }) => {
   const [open, setOpen] = useState(false);
-  const [regAddress1, set_regAddress1] = useState("");
   const [count, set_count] = useState(0);
 
   const notify = () => toast("Referral is Copied Successfully!");
@@ -68,13 +67,12 @@ const networkId=97;
       alert("kindly connect your wallet ");
       return;
     }
-    // if(regAddress1!=address)
+    if(regAddress.toLowerCase()!=address.toLowerCase())
 
-    // {
-    //   alert (regAddress1)
-    //   alert("kindly change your crypto wallet to the Registered wallet")
-    //   return;
-    // }
+    {
+      alert("kindly change your crypto wallet to the Registered wallet")
+      return;
+    }
     if(_amount==0 )
     {
       alert("kindly write amount to stake ");
@@ -149,23 +147,16 @@ const networkId=97;
   ];
 
 
-  useEffect(()=>{
-    if(count==0)
-    {
-      console.log("hello home ");
-      test()
-      // set_regAddress1(params.get("address"))
-      set_regAddress(params.get("address"))
-    set_count(1);
+  // useEffect(()=>{
+  //   if(count==0)
+  //   {
+  //     console.log("hello home ");
+  //   set_count(1);
 
-    }
+  //   }
 
-  },[])
-  function test()
-  {
-    set_regAddress1(params.get("address"))
+  // },[])
 
-  }
   return (
     <Wrapper>
       <div className="lading-page relative">
@@ -200,8 +191,8 @@ const networkId=97;
                 ))}
               </div>
               <div className="d-link mt-10">
-                <p className="d-par">Referral Link : {window.location.origin}/?ref={regAddress1?regAddress1.slice(0,4)+"...."+regAddress1.slice(38,42):"kindly connect"}</p>
-                <CopyToClipboard text={`${window.location.origin}/?ref=${regAddress1}`} >
+                <p className="d-par">Referral Link : {window.location.origin}/?ref={regAddress?regAddress.slice(0,4)+"...."+regAddress.slice(38,42):"kindly connect"}</p>
+                <CopyToClipboard text={`${window.location.origin}/?ref=${regAddress}`} >
                         <button className="copy-icon flex items-center justify-center" onClick={notify}>
                           <PiCopySimpleFill color='white' className=' text-2xl'  />
                         </button>

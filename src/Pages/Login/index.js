@@ -7,7 +7,7 @@ import { useDispatch } from "react-redux";
 import { setUserToken } from "../../store/reducers/authReducer";
 import { useLocation } from 'react-router-dom';
 
-const Login = ({props}) => {
+const Login = ({setuser}) => {
   const dispatch = useDispatch();
 
   const navigate = useNavigate();
@@ -33,12 +33,10 @@ const Login = ({props}) => {
         }
         else if(response.data[0].Email==email && response.data[0].password==password)
         {
-          // alert("kjbk")
-          // props.shift_screen(email);
-          // alert("kjbk 1")
+          setuser(response.data[0].userAddress,response.data[0]);
 
           dispatch(setUserToken(true));
-          navigate("dashboard/home?address="+response.data[0].userAddress);
+          navigate("dashboard/home");
 
 
         }

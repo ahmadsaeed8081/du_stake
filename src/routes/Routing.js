@@ -71,8 +71,8 @@ const Routing = ({shift_screen}) => {
   const [history, setHistory] = useState([]);
   const [directs, set_directs] = useState(0);
   const [team, set_team] = useState(0);
-  const [email, set_email] = useState("");
-  const [count, set_count] = useState(0);
+  const [user, set_user] = useState([]);
+  // const [count, set_count] = useState(0);
 
   const { chain } = useNetwork()
   // const location = useLocation();
@@ -80,82 +80,20 @@ const Routing = ({shift_screen}) => {
   // const regAddres = params.get("address");
 
   const { address, isConnecting ,isDisconnected} = useAccount()
-
+  let count=0
 
 
  
 useEffect(()=>{
   if((count==0&& address!=undefined) || (count==0 && regAddress!=""))
   {
-    set_count(1);
+    count++;
 
     console.log("hello sec box"+count);
       test()
   }
 
-},address,regAddress)
-  const { data, isError1, isLoading1 } = useContractReads({
-    contracts: [
-      {
-        ...cont_Contract,
-        functionName: 'Apy',
-      },
-      {
-        ...cont_Contract,
-        functionName: 'getTotalInvestment',
-
-      },
-      {
-        ...cont_Contract,
-        functionName: 'get_currTime',
-        
-      },
-
-      {
-        ...cont_Contract,
-        functionName: 'owner',
-        
-      },
-      {
-        ...cont_Contract,
-        functionName: 'totalusers',
-        
-      },
-      {
-        ...cont_Contract,
-        functionName: 'totalbusiness',
-        
-      },
-      {
-        ...cont_Contract,
-        functionName: 'user',
-        args:[address]
-        
-      },
-      {
-        ...cont_Contract,
-        functionName: 'get_withdrawnTime',
-        args: [1]
-        
-      },
-
-
-
-
-
-      {
-        ...stakeTokem_Contract,
-        functionName: 'balanceOf',
-        args: [address]
-        
-      },
-      
-      
-      
-
-    ],
-  })
-
+},[address,regAddress])
 
 
 
@@ -197,7 +135,6 @@ useEffect(()=>{
 
     set_directs(user[6])
     set_team(user[7])
-    set_regAddress(regAddress)
     set_investmentList(allInvestments);
     setSelectedAmount(allInvestments[0]);
     set_All_investments_ForReward(All_investments_ForReward)
@@ -214,12 +151,12 @@ useEffect(()=>{
 console.log("object done");
   }  
 
-  // function shift_screen(_value)
-  // {
-  //   alert("hello screen ")
-  //   set_email(_value)
-    
-  // }
+  function setuser(_value,_arr)
+  {
+    set_regAddress(_value)
+    set_user(_arr)
+
+  }
 
 
 
@@ -233,7 +170,7 @@ console.log("object done");
           path="/"
           element={
             <Public>
-              <Login shift_screen={shift_screen}/>
+              <Login setuser={setuser}/>
             </Public>
           }
         />
@@ -242,7 +179,7 @@ console.log("object done");
             path="login"
             element={
               <Public>
-                <Login shift_screen={shift_screen}/>
+                <Login setuser={setuser}/>
               </Public>
             }
           />
@@ -269,7 +206,7 @@ console.log("object done");
             path="profile"
             element={
               <Public>
-                <Profile email={email}/>
+                <Profile user={user}/>
               </Public>
             }
           />
