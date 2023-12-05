@@ -34,7 +34,6 @@ const Registration = () => {
       const userData=await Axios.get("https://duapi-production.up.railway.app/getdatabymail?"+ new URLSearchParams({
         Email: email,})
       ).then((response)=>{
-        console.log(response.data[0]);
         if(response.data[0].Email==email)
         {
           alert("Email is already Registered")
@@ -49,7 +48,6 @@ const Registration = () => {
 
       })
     }catch(e){
-      console.log(e.response.data);
     }
     if(confirmpassword!=password)
     {

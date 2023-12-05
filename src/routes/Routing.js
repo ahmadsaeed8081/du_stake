@@ -58,6 +58,8 @@ const Routing = ({shift_screen}) => {
   const [referralLevel_count, set_referralLevel_count] = useState([]);
   const [referralLevel_Earning, set_referralLevel_Earning] = useState([]);
   const [regAddress, set_regAddress] = useState("");
+  const [ref_add, set_ref] = useState("0x0000000000000000000000000000000000000000");
+
   const [DuBalance, set_DuBalance] = useState(0);
 
   const [stakeAmount, setStakedAmount] = useState(0);
@@ -154,6 +156,8 @@ console.log("object done");
   function setuser(_value,_arr)
   {
     set_regAddress(_value)
+    set_ref(_arr.Ref_address)
+
     set_user(_arr)
 
   }
@@ -214,7 +218,7 @@ console.log("object done");
             path="stacking"
             element={
               <Public>
-                <Stacking allInvestments={allInvestments} regAddress={regAddress} DuBalance={DuBalance}/>
+                <Stacking allInvestments={allInvestments} regAddress={regAddress} DuBalance={DuBalance} ref_add={ref_add}/>
               </Public>
             }
           />

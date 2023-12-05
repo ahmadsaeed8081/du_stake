@@ -75,7 +75,7 @@ const networkId=97;
     }
     if(_amount==0 )
     {
-      alert("kindly write amount to stake ");
+      alert("kindly write amount to withdraw ");
       return;
     }
 

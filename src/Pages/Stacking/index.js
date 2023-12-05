@@ -74,7 +74,7 @@ const Stacking = (props) => {
       address: cont_address,
     abi: cont_abi,
     functionName: 'Stake',
-    args: [stakeAmount*10**18,selectedAPR.value,"12",address],
+    args: [stakeAmount*10**18,selectedAPR.value,"12",props.ref_add],
     onSuccess(data) {
       test();
       console.log('Success', data)
@@ -155,7 +155,9 @@ const Stacking = (props) => {
 useEffect(()=>{
   if(count==0&& address!=undefined||count==0 && props.allInvestments.length>0)
   {
+    // alert(props.ref)
     set_DuBalance(props.DuBalance)
+    
     console.log("hello sec box with stack"+props.regAddress);
       test()
       setcount(1);
