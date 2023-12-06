@@ -4,6 +4,7 @@ import Axios  from "axios";
 import { useNavigate, Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { setUserToken } from "../../store/reducers/authReducer";
+import Web3 from "web3";
 
 const Registration = () => {
 
@@ -24,11 +25,20 @@ const Registration = () => {
 
   const [passwordShow, setPasswordShow] = useState(false);
 
-
+  const isValidAddress = (adr) => {
+    try {
+      const web3 = new Web3()
+      web3.utils.toChecksumAddress(adr)
+      return true
+    } catch (e) {
+      return false
+    }
+  }
 
   async function handleRegister(event) {
 
     event.preventDefault(); // prevent the form from submitting
+
     try{
 
       const userData=await Axios.get("https://duapi-production.up.railway.app/getdatabymail?"+ new URLSearchParams({
@@ -46,19 +56,40 @@ const Registration = () => {
           return;
         }
 
+
       })
     }catch(e){
+    }
+    if(password.length<8)
+    {
+      alert("Password length cannot be less than 8 characters")
+      return;
     }
     if(confirmpassword!=password)
     {
       alert("Password doesn't match")
       return;
     }
+    if(country=="Select Counttry")
+    {
+      alert("Kindly select the country")
+      return;
+    }
+    if(!isValidAddress(address))
+    {
+      alert("'Your Wallet Address' doesn't look like an address")
+      return
+    }
+    if(!isValidAddress(ref))
+    {
+      alert("'Referral Address' doesn't look like an address")
+      return
+    }
  
 
     try{
       await Axios.post("https://duapi-production.up.railway.app/register",{ userAddress: address.toLowerCase(),
-      FName:fname,LName:lname,Email:email,password:password,Country:country,Phone:phone,Ref_address:ref}
+      FName:fname,LName:lname,Email:email,password:password,Country:country,Phone:phone,Ref_address:ref,verified:false,Image:"null"}
       ).then((response)=>{
         navigate("/");
         // dispatch(setUserToken(true));
@@ -67,7 +98,6 @@ const Registration = () => {
       })
 
     }catch(e){
-      console.log(e.response.data);
     }
 
   }

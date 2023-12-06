@@ -57,7 +57,7 @@ const Stacking = (props) => {
   const [choosed_Unstake_inv, set_choosed_Unstake_inv] = useState();
   const [allInvestments, set_investmentList] = useState([]);
   const [selectedAmount, setSelectedAmount] = useState(null);
-  const [count, setcount] = useState(0);
+  // const [count, setcount] = useState(0);
 
   // const [regAddres, setregAddres] = useState("");
 
@@ -66,7 +66,7 @@ const Stacking = (props) => {
 
   const { address, isConnecting ,isDisconnected} = useAccount()
   const networkId=97;
-
+let count=0;
 
 
     const { data:stakeResult, isLoading:isLoading_stake, isSuccess:stakeSuccess, write:staking } = useContractWrite({
@@ -76,7 +76,7 @@ const Stacking = (props) => {
     functionName: 'Stake',
     args: [stakeAmount*10**18,selectedAPR.value,"12",props.ref_add],
     onSuccess(data) {
-      test();
+      props.test();
       console.log('Success', data)
     },
   
@@ -129,7 +129,7 @@ const Stacking = (props) => {
   const waitForTransaction2 = useWaitForTransaction({
     hash: stakeResult?.hash,
     onSuccess(data) {
-    test?.()
+    props.test?.()
       console.log('Success2',data )
     },
   })
@@ -137,7 +137,7 @@ const Stacking = (props) => {
   const waitForTransaction3 = useWaitForTransaction({
     hash: data__unstake?.hash,
     onSuccess(data) {
-    test?.()
+    props.test?.()
       console.log('Success2',data )
     },
   })
@@ -145,7 +145,7 @@ const Stacking = (props) => {
   const waitForTransaction4 = useWaitForTransaction({
     hash: stakeResult_withdrawReward?.hash,
     onSuccess(data) {
-    test?.()
+    props.test?.()
       console.log('Success2',data )
     },
   })
@@ -159,8 +159,8 @@ useEffect(()=>{
     set_DuBalance(props.DuBalance)
     
     console.log("hello sec box with stack"+props.regAddress);
-      test()
-      setcount(1);
+      test1()
+      count++;
   }
 
 },address,props.allInvestments)
@@ -273,7 +273,7 @@ useEffect(()=>{
 
 
 
-    function test(){
+    function test1(){
 
       // alert(props.regAddress)
     // const web3= new Web3(new Web3.providers.HttpProvider("https://bsc-testnet.publicnode.com	"));

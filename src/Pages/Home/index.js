@@ -16,9 +16,10 @@ import {useNetwork,  useSwitchNetwork } from 'wagmi'
 
 import { useAccount, useDisconnect } from 'wagmi'
 import { useContractReads,useContractRead ,useContractWrite, usePrepareContractWrite, useWaitForTransaction } from 'wagmi'
-const Main = ({totalReward,totalInvestment,Total_withdraw,totalEarning,directs,team,set_regAddress,regAddress }) => {
+const Main = ({totalReward,totalInvestment,Total_withdraw,totalEarning,directs,team,set_regAddress,regAddress,totalRefIncome,test }) => {
   const [open, setOpen] = useState(false);
   const [count, set_count] = useState(0);
+  const [withdrawAmount, set_withdrawAmount] = useState(0);
 
   const notify = () => toast("Referral is Copied Successfully!");
   const { address, isConnecting ,isConnected,isDisconnected} = useAccount()
@@ -34,6 +35,8 @@ const { config:claimRewardConfig } = usePrepareContractWrite({
   address: cont_address,
   abi: cont_abi,
   functionName: 'withdrawReward',
+  args: [Number(withdrawAmount)*10**18],
+
 
 })
 const { data:stakeResult_withdrawReward, isLoading2_withdrawReward, isSuccess2_withdrawReward, write:withdrawReward } = useContractWrite(claimRewardConfig)
@@ -62,6 +65,7 @@ const networkId=97;
 
   function withdraw(_amount)
   {
+    set_withdrawAmount(_amount)
     if(isDisconnected)
     {
       alert("kindly connect your wallet ");
@@ -122,8 +126,8 @@ const networkId=97;
     },
     {
       img: "../images/medal.png",
-      title: "Referrak Income",
-      price: "$30,920.10",
+      title: "Referral Income",
+      price: totalRefIncome/10**18,
     },
     {
       img: "../images/reward.png",

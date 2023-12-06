@@ -53,8 +53,10 @@ const Profile = ({user}) => {
             <div className="form-block flex flex-col">
               <h1 className="form-title">Account Setting</h1>
               <div className="input-filed flex flex-col my-12">
-                <div className="i-lbl mb-2">Your Profile Picture</div>
-                <div
+                {/* <div className="i-lbl mb-2">Your Profile Picture</div> */}
+                <div className="i-lbl mb-2"></div>
+
+                {/* <div
                   className="img-box flex flex-col items-center justify-center"
                   onClick={() => document.getElementById("upload_img").click()}
                 >
@@ -77,7 +79,7 @@ const Profile = ({user}) => {
                       setImg(e.target.files[0]);
                     }}
                   />
-                </div>
+                </div> */}
               </div>
               <div className="row2">
                 <div className="input-filed flex flex-col">

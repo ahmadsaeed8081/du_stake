@@ -47,7 +47,9 @@ const Routing = ({shift_screen}) => {
   const [ selectedAPR,set_selectedAPR] = useState(APRList[0])
 
   const [open, setOpen] = useState(false);
+  const [totalRefIncome, set_totalRefIncome] = useState(0);
 
+  
   const [expend, setExpend] = useState(false);
   const [totalReward, set_totalReward] = useState(0);
   const [Total_withdraw, set_Total_withdraw] = useState(0);
@@ -92,7 +94,7 @@ useEffect(()=>{
     count++;
 
     console.log("hello sec box"+count);
-      test()
+      test();
   }
 
 },[address,regAddress])
@@ -137,6 +139,8 @@ useEffect(()=>{
 
     set_directs(user[6])
     set_team(user[7])
+    set_totalRefIncome(user[4])
+
     set_investmentList(allInvestments);
     setSelectedAmount(allInvestments[0]);
     set_All_investments_ForReward(All_investments_ForReward)
@@ -202,49 +206,49 @@ console.log("object done");
             path="home"
             element={
               <ProtectedRoute>
-                <Home      totalReward={totalReward} totalInvestment={totalInvestment} Total_withdraw={Total_withdraw} totalEarning={totalEarning} directs={directs} team={team}  regAddress={regAddress}     set_regAddress={set_regAddress}    />
+                <Home    test={test} totalRefIncome={totalRefIncome}  totalReward={totalReward} totalInvestment={totalInvestment} Total_withdraw={Total_withdraw} totalEarning={totalEarning} directs={directs} team={team}  regAddress={regAddress}     set_regAddress={set_regAddress}    />
               </ProtectedRoute>
             }
           />
           <Route
             path="profile"
             element={
-              <Public>
+              <ProtectedRoute>
                 <Profile user={user}/>
-              </Public>
+              </ProtectedRoute>
             }
           />
           <Route
             path="stacking"
             element={
-              <Public>
-                <Stacking allInvestments={allInvestments} regAddress={regAddress} DuBalance={DuBalance} ref_add={ref_add}/>
-              </Public>
+              <ProtectedRoute>
+                <Stacking allInvestments={allInvestments} regAddress={regAddress} DuBalance={DuBalance} ref_add={ref_add} test={test}/>
+              </ProtectedRoute>
             }
           />
 
           <Route
             path="history"
             element={
-              <Public>
+              <ProtectedRoute>
                 <History  history={history} />
-              </Public>
+              </ProtectedRoute>
             }
           />
           <Route
             path="reward"
             element={
-              <Public>
+              <ProtectedRoute>
                 <Reward referralLevel_count={referralLevel_count} referralLevel_Earning={referralLevel_Earning}/>
-              </Public>
+              </ProtectedRoute>
             }
           />
           <Route
             path="verification"
             element={
-              <Public>
-                <Verification />
-              </Public>
+              <ProtectedRoute>
+                <Verification regAddress={regAddress}/>
+              </ProtectedRoute>
             }
           />
         </Route>

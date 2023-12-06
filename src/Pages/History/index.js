@@ -3,67 +3,18 @@ import Wrapper from "../../routes/Wrapper";
 import UserProfile from "../../components/userProfile";
 
 const History = ({history}) => {
-  const data = [
-    {
-      requirement: "Global Payment",
-      dateRequest: "29 June 2021",
-      dateSubmitted: "09 July 2021",
-      status: "Received",
-     
-    },
-    {
-      requirement: "Smart Cart",
-      dateRequest: "21 June 2021",
-      dateSubmitted: "09 Sept 2021",
-      status: "Received",
-    },
-    {
-      requirement: "Us Payment Histry",
-      dateRequest: "10 June 2021",
-      dateSubmitted: "19 Sept 2021",
-      status: "Received",
-      investment: "$656.67",
-    },
-    {
-      requirement: "Global Payment ",
-      dateRequest: "15 August 2023",
-      dateSubmitted: "10 Dec 2023",
-      status: "Received",
-      investment: "$156.67",
-    },
-    {
-      requirement: "Smart Cart Amount",
-      dateRequest: "30 August 2022",
-      dateSubmitted: "05 August 2022",
-      status: "Received",
-      investment: "$956.67",
-    },
-    {
-      requirement: "Us Payment Histry",
-      dateRequest: "10 June 2021",
-      dateSubmitted: "19 Sept 2021",
-      status: "Received",
-    },
-    {
-      requirement: "Long Amount",
-      dateRequest: "30 August 2022",
-      dateSubmitted: "05 August 2022",
-      status: "Received",
-    },
-    {
-      requirement: "Us Payment Histry",
-      dateRequest: "10 June 2021",
-      dateSubmitted: "19 Sept 2021",
-      status: "Received",
-    },
-    {
-      requirement: "Long Amount",
-      dateRequest: "30 August 2022",
-      dateSubmitted: "05 August 2022",
-      status: "Received",
-    },
-    // Add more data as needed
-  ];
+
+  const count = (_deadline) => {
+    console.log("here is deadine "+_deadline)
+    var now = new Date().getTime();
+    _deadline = Number(_deadline) * 1000;
+    var now = new Date().getDate(_deadline)+"-"+new Date().getMonth(_deadline)+"-"+new Date().getFullYear(_deadline);
+return now
+    
+  };
+
+
+
   return (
     <Wrapper>
       <div className="History-page ">
@@ -89,7 +40,6 @@ const History = ({history}) => {
                 (
                   <>
                     <tbody>
-                      <p>hello</p>
                     {history.map((item, index) => (
                       <tr
                         key={index}
@@ -99,7 +49,7 @@ const History = ({history}) => {
                         <td className="fd border">{item[0]==1?("Stake"):(item[0]==2?("UnStake"):(item[0]==3?("Withdraw"):(null) ) ) }</td>
                         
                         <td className="fd border">{item[1]/10**18} $DU</td>
-                        <td className="fd border">{item[2]}</td>
+                        <td className="fd border">{count(item[2])}</td>
                       </tr>
                     ))}
                   </tbody>
