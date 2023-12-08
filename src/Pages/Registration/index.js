@@ -1,16 +1,24 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { EyeIcon, SmsIcon } from "../../assets/Icons";
 import Axios  from "axios";
 import { useNavigate, Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { setUserToken } from "../../store/reducers/authReducer";
 import Web3 from "web3";
+import { useLocation } from 'react-router-dom';
+import { cont_address,token_Address,cont_abi,token_abi } from "../../components/config";
 
 const Registration = () => {
 
   const dispatch = useDispatch();
 
   const navigate = useNavigate();
+
+  const location = useLocation();
+  const params = new URLSearchParams(location.search);
+  const temp_address = params.get("address");
+
+  
 
 
   const [fname, set_fname] = useState("");
@@ -38,6 +46,9 @@ const Registration = () => {
   async function handleRegister(event) {
 
     event.preventDefault(); // prevent the form from submitting
+
+    const web3= new Web3(new Web3.providers.HttpProvider("https://endpoints.omniatech.io/v1/bsc/testnet/public	"));
+    const contract=new web3.eth.Contract(cont_abi,cont_address);
 
     try{
 
@@ -85,7 +96,14 @@ const Registration = () => {
       alert("'Referral Address' doesn't look like an address")
       return
     }
- 
+    let user = await contract.methods.user(ref).call();
+    if(!isValidAddress(user[3]))
+    {
+      alert("'Referral Address' is not registered")
+      return
+    }      
+
+    
 
     try{
       await Axios.post("https://duapi-production.up.railway.app/register",{ userAddress: address.toLowerCase(),
@@ -102,7 +120,9 @@ const Registration = () => {
 
   }
 
-
+  // useEffect(()=>{
+  //   set_ref(temp_address)
+  // },[])
 
 
 
@@ -473,7 +493,7 @@ const Registration = () => {
               <div className="input-box flex items-center gap-3">
                 <input
                   type="text"
-                  placeholder="Enter your id"
+                  placeholder="Enter your address"
                   className="txt cleanbtn w-full"
                   value={address}
                   required
@@ -486,14 +506,13 @@ const Registration = () => {
 
             </div>
             <div className="input-field flex flex-col gap-3">
-              <h1 className="input-lbl">Referral address</h1>
+              <h1 className="input-lbl">Referral address (Optional)</h1>
               <div className="input-box flex items-center gap-3">
                 <input
                   type="text"
-                  placeholder="Enter your id"
+                  placeholder="Enter your referral address"
                   className="txt cleanbtn w-full"
                   value={ref}
-                  required
                   onChange={(e) => {
                     set_ref(e.target.value);
                 }}

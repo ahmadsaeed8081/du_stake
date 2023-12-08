@@ -118,16 +118,22 @@ useEffect(()=>{
     let TotalInvestment = await contract.methods.getTotalInvestment().call({ from: regAddress });       
     let totalEarning = await contract.methods.get_totalEarning().call({ from: regAddress });       
     let history = await contract.methods.get_history(regAddress).call({ from: regAddress });
-    // console.log("helo "+history)
        
-    let referralLevel_count = await contract.methods.referralLevel_count(regAddress).call();       
-    let referralLevel_earning = await contract.methods.referralLevel_earning(regAddress).call();       
+    let referralLevel_count = await contract.methods.Level_count(regAddress).call();       
+    let referralLevel_earning = await contract.methods.Level_earning(regAddress).call();       
 
-    let Total_withdraw = await contract.methods.total_withdraw_reaward().call({ from: regAddress });       
-    let user = await contract.methods.user(regAddress).call();       
+    let Total_withdraw = await contract.methods.total_withdraw_reaward().call({ from: regAddress });
+    console.log("helo gg")
+       
+    let user = await contract.methods.user(regAddress).call();      
+    console.log("helo ggff")
+ 
+    let bonus = await contract.methods.BonusOf(regAddress).call();       
+    console.log("helo ggff11")
 
     let allInvestments = await contract.methods.getAll_investments().call({from: regAddress});
              console.log("bal "+allInvestments);
+             
     let All_investments_ForReward = await contract.methods
     .getAll_investments_ForReward()
     .call({ from: regAddress });
@@ -137,9 +143,9 @@ useEffect(()=>{
     set_referralLevel_count(referralLevel_count)
     set_referralLevel_Earning(referralLevel_earning)
 
-    set_directs(user[6])
-    set_team(user[7])
-    set_totalRefIncome(user[4])
+    set_directs(user[5])
+    set_team(user[6])
+    set_totalRefIncome(bonus)
 
     set_investmentList(allInvestments);
     setSelectedAmount(allInvestments[0]);

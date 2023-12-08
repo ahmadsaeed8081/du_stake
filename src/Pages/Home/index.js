@@ -26,9 +26,9 @@ const Main = ({totalReward,totalInvestment,Total_withdraw,totalEarning,directs,t
 
   const { chain } = useNetwork()
 
-  const location = useLocation();
-  const params = new URLSearchParams(location.search);
-  const temp_address = params.get("address");
+  // const location = useLocation();
+  // const params = new URLSearchParams(location.search);
+  // const temp_address = params.get("address");
 // alert("hello "+regAddres)
 
 const { config:claimRewardConfig } = usePrepareContractWrite({
