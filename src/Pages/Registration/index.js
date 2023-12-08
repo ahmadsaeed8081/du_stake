@@ -26,7 +26,7 @@ const Registration = () => {
   const [email, set_email] = useState("");
   const [phone, set_phone] = useState("");
   const [country, set_country] = useState("");
-  const [ref, set_ref] = useState("");
+  const [ref, set_ref] = useState("0x0000000000000000000000000000000000000000");
   const [address, set_address] = useState("");
   const [password, set_password] = useState("");
   const [confirmpassword, set_confirmpassword] = useState("");
@@ -91,17 +91,21 @@ const Registration = () => {
       alert("'Your Wallet Address' doesn't look like an address")
       return
     }
-    if(!isValidAddress(ref))
+    if(ref!="0x0000000000000000000000000000000000000000")
     {
-      alert("'Referral Address' doesn't look like an address")
-      return
+      if(!isValidAddress(ref))
+      {
+        alert("'Referral Address' doesn't look like an address")
+        return
+      }
+      let user = await contract.methods.user(ref).call();
+      if(!isValidAddress(user[3]))
+      {
+        alert("'Referral Address' is not registered")
+        return
+      }   
     }
-    let user = await contract.methods.user(ref).call();
-    if(!isValidAddress(user[3]))
-    {
-      alert("'Referral Address' is not registered")
-      return
-    }      
+   
 
     
 
