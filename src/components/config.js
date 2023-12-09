@@ -1,4 +1,4 @@
-export const cont_address="0x6C80F6A96468A585B3540828c758a753047AA7B0";
+export const cont_address="0x5d37a962a6132460ca5877936569aD1bAa4EEeC9";
 export const token_Address="0xd962cE68512C52F71Ca3033D43E8598049C2568F";
 
 export const cont_abi=[
@@ -81,11 +81,6 @@ export const cont_abi=[
 	},
 	{
 		"inputs": [
-			{
-				"internalType": "uint256",
-				"name": "token",
-				"type": "uint256"
-			},
 			{
 				"internalType": "uint256",
 				"name": "_amount",
@@ -240,19 +235,6 @@ export const cont_abi=[
 				"internalType": "struct DuStake.history[]",
 				"name": "_arr",
 				"type": "tuple[]"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"name": "get_total_LevelReward",
-		"outputs": [
-			{
-				"internalType": "uint256",
-				"name": "",
-				"type": "uint256"
 			}
 		],
 		"stateMutability": "view",
@@ -448,6 +430,11 @@ export const cont_abi=[
 				"internalType": "uint256",
 				"name": "i",
 				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "point",
+				"type": "uint256"
 			}
 		],
 		"name": "getReward_perInv",
@@ -603,6 +590,45 @@ export const cont_abi=[
 				"internalType": "uint64",
 				"name": "",
 				"type": "uint64"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "maximum_withdraw_reward_limit",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "minimum_investment",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "minimum_withdraw_reward_limit",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
 			}
 		],
 		"stateMutability": "view",
@@ -831,6 +857,19 @@ export const cont_abi=[
 			{
 				"internalType": "uint256",
 				"name": "timeframe",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "withdrawfee",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
 				"type": "uint256"
 			}
 		],

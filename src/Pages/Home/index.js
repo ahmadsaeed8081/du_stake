@@ -16,7 +16,7 @@ import {useNetwork,  useSwitchNetwork } from 'wagmi'
 
 import { useAccount, useDisconnect } from 'wagmi'
 import { useContractReads,useContractRead ,useContractWrite, usePrepareContractWrite, useWaitForTransaction } from 'wagmi'
-const Main = ({totalReward,totalInvestment,Total_withdraw,totalEarning,directs,team,set_regAddress,regAddress,totalRefIncome,test }) => {
+const Main = ({totalReward,totalInvestment,Total_withdraw,totalEarning,directs,team,set_regAddress,regAddress,totalRefIncome,test , minWithdraw, maxWithdraw}) => {
   const [open, setOpen] = useState(false);
   const [count, set_count] = useState(0);
   const [withdrawAmount, set_withdrawAmount] = useState(0);
@@ -69,6 +69,16 @@ const networkId=97;
     if(isDisconnected)
     {
       alert("kindly connect your wallet ");
+      return;
+    }
+    if(_amount<Number(minWithdraw)/10**18)
+    {
+      alert("You can't withdraw less than "+Number(minWithdraw)/10**18 +" tokens");
+      return;
+    }
+    if(_amount<Number(maxWithdraw)/10**18)
+    {
+      alert("You can't withdraw less than "+Number(maxWithdraw)/10**18 +" tokens");
       return;
     }
     if(regAddress.toLowerCase()!=address.toLowerCase())

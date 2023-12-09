@@ -331,6 +331,11 @@ useEffect(()=>{
       alert("kindly write amount to stake ");
       return;
     }
+    if(stakeAmount<Number(props.min_stake)/10**18 )
+    {
+      alert("Minimum Stake amount is "+ Number(props.min_stake)/10**18);
+      return;
+    }
     let fee= (stakeAmount*0.3)/(100)
     fee=fee*10**18;
 

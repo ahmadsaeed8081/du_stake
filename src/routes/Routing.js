@@ -76,6 +76,12 @@ const Routing = ({shift_screen}) => {
   const [directs, set_directs] = useState(0);
   const [team, set_team] = useState(0);
   const [user, set_user] = useState([]);
+
+
+  const [min_stake, set_min_stake] = useState(0);
+  const [minWithdraw, set_minWithdraw] = useState(0);
+  const [maxWithdraw, set_maxWithdraw] = useState(0);
+
   // const [count, set_count] = useState(0);
 
   const { chain } = useNetwork()
@@ -112,6 +118,10 @@ useEffect(()=>{
     set_DuBalance(DuBalance);
     
     let curr_time = await contract.methods.get_currTime().call();    
+    let min_stakeAmount = await contract.methods.minimum_investment().call();    
+    let min_Withlimit = await contract.methods.minimum_withdraw_reward_limit().call();    
+    let max_Withlimit = await contract.methods.maximum_withdraw_reward_limit().call();    
+
     set_currTime(curr_time);
 
     let totalReward = await contract.methods.get_TotalReward().call({ from: regAddress });       
@@ -121,7 +131,7 @@ useEffect(()=>{
        
     let referralLevel_count = await contract.methods.Level_count(regAddress).call();       
     let referralLevel_earning = await contract.methods.Level_earning(regAddress).call();       
-
+    
     let Total_withdraw = await contract.methods.total_withdraw_reaward().call({ from: regAddress });
     console.log("helo gg")
        
@@ -142,7 +152,9 @@ useEffect(()=>{
     set_totalEarning(totalEarning)
     set_referralLevel_count(referralLevel_count)
     set_referralLevel_Earning(referralLevel_earning)
-
+    set_min_stake(min_stakeAmount)
+    set_minWithdraw(min_Withlimit)
+    set_maxWithdraw(max_Withlimit)
     set_directs(user[5])
     set_team(user[6])
     set_totalRefIncome(bonus)
@@ -158,7 +170,12 @@ useEffect(()=>{
     }    
     set_totalReward(totalReward);
     set_Total_withdraw(Total_withdraw);
-
+    let temp;
+    // for(var i=0;i<12;i++)
+    // {
+    //   temp+=referralLevel_earning[i];
+    // }
+    
 
 console.log("object done");
   }  
@@ -212,7 +229,7 @@ console.log("object done");
             path="home"
             element={
               <ProtectedRoute>
-                <Home    test={test} totalRefIncome={totalRefIncome}  totalReward={totalReward} totalInvestment={totalInvestment} Total_withdraw={Total_withdraw} totalEarning={totalEarning} directs={directs} team={team}  regAddress={regAddress}     set_regAddress={set_regAddress}    />
+                <Home   minWithdraw={minWithdraw} maxWithdraw={maxWithdraw} test={test} totalRefIncome={totalRefIncome}  totalReward={totalReward} totalInvestment={totalInvestment} Total_withdraw={Total_withdraw} totalEarning={totalEarning} directs={directs} team={team}  regAddress={regAddress}     set_regAddress={set_regAddress}    />
               </ProtectedRoute>
             }
           />
@@ -228,9 +245,9 @@ console.log("object done");
             path="stacking"
             element={
               <ProtectedRoute>
-                <Stacking allInvestments={allInvestments} regAddress={regAddress} DuBalance={DuBalance} ref_add={ref_add} test={test}/>
+                <Stacking  min_stake={min_stake}  allInvestments={allInvestments} regAddress={regAddress} DuBalance={DuBalance} ref_add={ref_add} test={test}/>
               </ProtectedRoute>
-            }
+            } 
           />
 
           <Route
