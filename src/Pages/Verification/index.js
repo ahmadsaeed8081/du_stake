@@ -29,15 +29,16 @@ if(img){
   
     if(res0.data[0]!=undefined)
     { 
-      if(!res0.data[0].verified)
+      alert("jhjh")
+      if(res0.data[0].verified=="undefined")
       {
         const data={userAddress: res0.data[0].userAddress.toLowerCase(),
-          FName:res0.data[0].FName,LName:res0.data[0].LName,Email:res0.data[0].Email,password:res0.data[0].password,Country:res0.data[0].Country,Phone:res0.data[0].Phone,Ref_address:res0.data[0].Ref_address,verified:false,Image:preview};
+          FName:res0.data[0].FName,LName:res0.data[0].LName,Email:res0.data[0].Email,password:res0.data[0].password,Country:res0.data[0].Country,Phone:res0.data[0].Phone,Ref_address:res0.data[0].Ref_address,verified:"underApproval",Image:preview};
 
         const res =await axios.patch("https://duapi-production.up.railway.app/user/"+ res0.data[0]._id,data);
           if(res.data="its done")
           {
-            alert("image is uploaded")
+            alert("Image is uploaded")
             check()
 
           }
@@ -61,19 +62,24 @@ if(img){
   {
     const res0 =await axios.get("https://duapi-production.up.railway.app/getdatabyaddress?"+ new URLSearchParams({userAddress: props.regAddress.toLowerCase(),}));
 
-      if(res0.data[0].Image=="null" && !res0.data[0].verified  )
-      {
-        set_status(0)
-      }
-      else if(res0.data[0].Image!="null" && !res0.data[0].verified  )
-      {
-        set_status(1)
-      }
-      else if(res0.data[0].Image!="null" && res0.data[0].verified  )
-      {
+    console.log("hello check "+res0);
+    if(res0.data[0].Image=="null" && res0.data[0].verified=="undefined"  )
+    {
+      set_status(0)
+    }
+    else if(res0.data[0].Image!="null" && res0.data[0].verified== "underApproval" )
+    {
+      set_status(1)
+    }
+    else if(res0.data[0].Image!="null" && res0.data[0].verified== "verified" )
+    {
+      set_status(2)
+    }
+    else if(res0.data[0].Image!="null" && res0.data[0].verified== "decline" )
+    {
 
-        set_status(2)
-      }
+      set_status(3)
+    }
 
     
   }
@@ -163,6 +169,15 @@ useEffect(()=>{
                                     <p className="veri-desc " style={{ color:"green" }}>
                                             Your Request has been approved, you can now stake $DU and can earn Reward.
                                     </p>
+                      
+                                  </div>
+                                </div>:status==3?
+                                
+                                <div className="Verification-box">
+
+                                  <div className="flex flex-col justify-center mt-20 verify max">
+                                    <h2 className="veri-heading" style={{ color:"red" }}>We are Sorry to inform that Your request has been declined!</h2>
+
                       
                                   </div>
                                 </div>:null

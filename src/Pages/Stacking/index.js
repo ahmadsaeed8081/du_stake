@@ -63,7 +63,7 @@ const Stacking = (props) => {
 
   const { chain } = useNetwork()
 
-
+  const id="12";
   const { address, isConnecting ,isDisconnected} = useAccount()
   const networkId=97;
 let count=0;
@@ -74,7 +74,7 @@ let count=0;
       address: cont_address,
     abi: cont_abi,
     functionName: 'Stake',
-    args: [stakeAmount*10**18,selectedAPR.value,"12",props.ref_add],
+    args: [stakeAmount*10**18,selectedAPR.value,id,props.ref_add],
     onSuccess(data) {
       props.test();
       console.log('Success', data)
@@ -153,7 +153,7 @@ let count=0;
 
 
 useEffect(()=>{
-  if(count==0&& address!=undefined||count==0 && props.allInvestments.length>0)
+  if(count==0  || count==0 && props.allInvestments.length>0)
   {
     // alert(props.ref)
     set_DuBalance(props.DuBalance)
@@ -164,63 +164,7 @@ useEffect(()=>{
   }
 
 },address,props.allInvestments)
-  const { data, isError1, isLoading1 } = useContractReads({
-    contracts: [
-      {
-        ...cont_Contract,
-        functionName: 'Apy',
-      },
-      {
-        ...cont_Contract,
-        functionName: 'getTotalInvestment',
 
-      },
-      {
-        ...cont_Contract,
-        functionName: 'get_currTime',
-        
-      },
-
-      {
-        ...cont_Contract,
-        functionName: 'owner',
-        
-      },
-      {
-        ...cont_Contract,
-        functionName: 'totalusers',
-        
-      },
-      {
-        ...cont_Contract,
-        functionName: 'totalbusiness',
-        
-      },
-      {
-        ...cont_Contract,
-        functionName: 'user',
-        args:[address]
-        
-      },
-      {
-        ...cont_Contract,
-        functionName: 'get_withdrawnTime',
-        args: [1]
-        
-      },
-
-      {
-        ...stakeTokem_Contract,
-        functionName: 'balanceOf',
-        args: [address]
-        
-      },
-      
-      
-      
-
-    ],
-  })
 
   const {switchNetwork:stake_switch } =
     useSwitchNetwork({
@@ -314,8 +258,11 @@ useEffect(()=>{
 
   async function stake()
   {
-
-
+    if(props.isVerified!="verified")
+    {
+      alert("Only regitered Members are allowed to stake");
+      return;
+    }
     if(isDisconnected)
     {
       alert("kindly connect your wallet ");
@@ -453,14 +400,14 @@ useEffect(()=>{
                       <div className="input_field flex flex-col mb-3">
                         <div className="flex items-center justify-between gap-2 mb-1">
                           <h1 className="lbl">Select Amount:</h1>
-                          <h1 className="lbl">Balance: {data?(Number(DuBalance)/10**18).toFixed(2):0} $DU</h1>
+                          <h1 className="lbl">Balance: {DuBalance>0?(Number(DuBalance)/10**18).toFixed(2):0} $DU</h1>
                         </div>
                         <div className="input-box flex items-center">
                           <input type="number" 
                           className="txt cleanbtn w-full" 
                           min={0}
                           value={stakeAmount}
-                          max={data?(Number(DuBalance)/10**18):0}
+                          max={DuBalance>0?(Number(DuBalance)/10**18):0}
                           onChange={(e)=>setStakedAmount(e.target.value)}
                           />
 

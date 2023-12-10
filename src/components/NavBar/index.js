@@ -22,7 +22,7 @@ const NavBar = () => {
       img: "/images/ClockIcon.svg",
     },
     {
-      lbl: "Referral MLM",
+      lbl: "Level Rewards",
       slug: "/dashboard/reward",
       img: "/images/ReplaceIcon.svg",
     },

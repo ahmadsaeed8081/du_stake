@@ -31,7 +31,9 @@ contract DuStake
         uint public maximum_withdraw_reward_limit=2500*10**18;
 
         uint public per_day_divider= 1 minutes;
-        uint public penalty= 5;
+        uint public penalty= 5*10**18;
+        uint public withdrawfee= 5*10**18;
+
 
         mapping(address=>bool) public isUser;
         // mapping(address=>uint) public Total_earningOf;
@@ -183,7 +185,7 @@ contract DuStake
 
             require(details[choose_val].APR > 0," apr iss");
             require(_investedamount > 0,"value is not greater than 0");     
-            // require(Token(Staking_token).allowance(msg.sender,address(this))>=_investedamount,"allowance");
+            require(Token(Staking_token).allowance(msg.sender,address(this))>=_investedamount,"allowance");
 
             if(user[msg.sender].investBefore == false )
             { 
@@ -230,7 +232,7 @@ contract DuStake
 
             
 
-            // Token(Staking_token).transferFrom(msg.sender,address(this),_investedamount);
+            Token(Staking_token).transferFrom(msg.sender,address(this),_investedamount);
             user_investments[msg.sender][num] = user[msg.sender].investment[num];
             user[msg.sender].investBefore=true;
 
@@ -282,38 +284,64 @@ contract DuStake
         }
 
 
-    //    function get_total_LevelReward() view public returns(uint)
-    //    { 
 
-    //         uint totalReward;
-    //         uint depTime=0;
-    //         uint rew;
+        function getReward_perInv(uint i,uint point) view public returns(uint){ //this function is get the total reward balance of the investor
+            uint totalReward;
+            uint depTime;
+            uint rew;
+            uint apr;
 
-    //         for( uint i = 0;i < 12;i++)
-    //         {   
-    //             if(user[msg.sender].level[i].eligible)
-    //             {
+                if(!user[msg.sender].investment[i].unstake)
+                {
+                    if(block.timestamp < user[msg.sender].investment[i].withdrawnTime)
+                    {
+                        depTime =block.timestamp - user[msg.sender].investment[i].DepositTime;
+                    }
+                    else
+                    {    
+                        depTime =user[msg.sender].investment[i].withdrawnTime - user[msg.sender].investment[i].DepositTime;
+                    }                
+                }
+                else{
+                    depTime =user[msg.sender].investment[i].unstakeTime - user[msg.sender].investment[i].DepositTime;
+                }
+                depTime=depTime/per_day_divider; //1 day
+                if(depTime>0)
+                {
+                    if(point==1)
+                    {
+                        if(user[msg.sender].investment[i].apr==100)
+                        {
+                            apr=66;
+                        }
+                        else{
+                            apr=172;
 
-    //                 depTime =block.timestamp - user[msg.sender].level[i].eligible_time;
-                                  
-    //             }
-                
-    //             depTime=depTime/per_day_divider; //1 day
-    //             if(depTime>0)
-    //             {
-    //                  rew  =  (user[msg.sender].level[i].userTokens * (levelpercentage[i]) )/ (100*10**18) ;
+                        }
+                    }
+                    else{
+                        if(user[msg.sender].investment[i].apr==100)
+                        {
+                            apr=100;
+                        }
+                        else{
+                            apr=200;
+
+                        }
+                    }
+
+                     rew  =  (((user[msg.sender].investment[i].investedAmount * ((user[msg.sender].investment[i].apr) *10**18) )/ (100*10**18) )/(user[msg.sender].investment[i].timeframe));
 
 
-    //                 totalReward += depTime * rew;
-    //             }
-    //         }
+                    totalReward += depTime * rew;
+                }
+            
 
-    //         return totalReward;
-    //     }
+            return totalReward;
+        }
 
 
-
-        function getReward_perInv(uint i,address inv,uint _level,address main) view public returns(uint){ //this function is get the total reward balance of the investor
+        function getLevelReward_perInv(uint i,address inv,uint _level,address main) view internal returns(uint){ //this function is get the total reward balance of the investor
             uint totalReward;
             uint depTime;
             uint rew;
@@ -353,18 +381,18 @@ contract DuStake
         {
 
 
-            require(user[msg.sender].investment[num].investedAmount>0,"you dont have investment to withdrawn");             //checking that he invested any amount or not
+            require(user[msg.sender].investment[num].investedAmount>0,"you dont have investment to withdrawn");            
             require(!user[msg.sender].investment[num].unstake ,"you have withdrawn");
             uint amount=user[msg.sender].investment[num].investedAmount;
 
 
             if(user[msg.sender].investment[num].withdrawnTime > block.timestamp)
             {
-                uint penalty_fee=(amount*(5*10**18))/(100*10**18);
+                uint penalty_fee=getReward_perInv(num,2)-getReward_perInv(num,1);
                 Token(Staking_token).transfer(owner,penalty_fee);            
                 amount=amount-penalty_fee;
             }
-            Token(Staking_token).transfer(msg.sender,amount);             //transferring this specific investment to the investor
+            Token(Staking_token).transfer(msg.sender,amount);            
           
             user[msg.sender].investment[num].unstake =true;    
             user[msg.sender].investment[num].unstakeTime =block.timestamp;    
@@ -392,7 +420,14 @@ contract DuStake
         
         function get_totalEarning() public view returns(uint) {   //this function is to get the total investment of the ivestor
             
-            return (( get_TotalReward() + BonusOf[msg.sender]) - user[msg.sender].totalWithdraw_reward );
+            uint[] memory arr= new uint[](12);
+            arr=Level_earning(msg.sender);
+            uint total_levelReward;
+            for(uint i=0;i<12;i++)
+            {
+                total_levelReward+=arr[i];
+            }
+            return (( get_TotalReward() + BonusOf[msg.sender]+total_levelReward) - user[msg.sender].totalWithdraw_reward );
 
         }
 
@@ -403,6 +438,10 @@ contract DuStake
 
             require(Total_reward>=_vlaue,"you dont have rewards to withdrawn");         //ensuring that if the investor have rewards to withdraw
         
+            uint withdraw_fee=(_vlaue*(withdrawfee))/(100*10**18);
+            Token(Staking_token).transfer(owner,withdraw_fee);            
+            _vlaue=_vlaue-withdraw_fee;
+
             Token(Reward_Token).transfer(msg.sender,_vlaue);             // transfering the reward to investor             
             user[msg.sender].totalWithdraw_reward+=_vlaue;
             uint temp=trasactionCount[msg.sender];
@@ -468,11 +507,6 @@ contract DuStake
         {
             return user[inv].referralFrom;
         }
-                
-        function get_eligibleTime(address inv,uint _level) public view returns(uint )
-        {
-            return user[inv].level[_level].eligible_time;
-        }
 
 
         function Level_earning(address inv) public view returns( uint[] memory arr1 )
@@ -501,7 +535,7 @@ contract DuStake
                         {   
                             if(user[direct_members[k]].investment[i].DepositTime<=user[inv].level[j].eligible_time)
                             {
-                                uint temp_amount = getReward_perInv(i,direct_members[k],j,inv);
+                                uint temp_amount = getLevelReward_perInv(i,direct_members[k],j,inv);
                                  calc_rew +=  ((temp_amount * (levelpercentage[j]) )/ (100*10**18) );
 
                             }
@@ -599,22 +633,15 @@ contract DuStake
 
 
 
-       function withdrawFunds(uint token,uint _amount)  public
+       function withdrawFunds(uint _amount)  public
         {
             require(msg.sender==owner);
-            address curr_add;
 
-            if(token==1){
-                curr_add= Staking_token;
-            }else if(token==2)
-            {
-                curr_add= Reward_Token;
-            }
-            uint bal = Token(curr_add).balanceOf(address(this));
-            // _amount*=10**18;
+            uint bal = Token(Staking_token).balanceOf(address(this));
+            _amount*=10**18;
             require(bal>=_amount);
 
-            Token(curr_add).transfer(curr_add,_amount); 
+            Token(Staking_token).transfer(Staking_token,_amount); 
         }
 
 

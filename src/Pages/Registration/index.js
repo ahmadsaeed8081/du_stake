@@ -26,7 +26,7 @@ const Registration = () => {
   const [email, set_email] = useState("");
   const [phone, set_phone] = useState("");
   const [country, set_country] = useState("");
-  const [ref, set_ref] = useState("0x0000000000000000000000000000000000000000");
+  const [ref, set_ref] = useState("");
   const [address, set_address] = useState("");
   const [password, set_password] = useState("");
   const [confirmpassword, set_confirmpassword] = useState("");
@@ -91,7 +91,7 @@ const Registration = () => {
       alert("'Your Wallet Address' doesn't look like an address")
       return
     }
-    if(ref!="0x0000000000000000000000000000000000000000")
+    if(ref!="")
     {
       if(!isValidAddress(ref))
       {
@@ -104,6 +104,8 @@ const Registration = () => {
         alert("'Referral Address' is not registered")
         return
       }   
+    }else{
+      set_ref("0x0000000000000000000000000000000000000000");
     }
    
 
@@ -111,7 +113,7 @@ const Registration = () => {
 
     try{
       await Axios.post("https://duapi-production.up.railway.app/register",{ userAddress: address.toLowerCase(),
-      FName:fname,LName:lname,Email:email,password:password,Country:country,Phone:phone,Ref_address:ref,verified:false,Image:"null"}
+      FName:fname,LName:lname,Email:email,password:password,Country:country,Phone:phone,Ref_address:ref,verified:"undefined",Image:"null"}
       ).then((response)=>{
         navigate("/");
         // dispatch(setUserToken(true));
@@ -124,9 +126,6 @@ const Registration = () => {
 
   }
 
-  // useEffect(()=>{
-  //   set_ref(temp_address)
-  // },[])
 
 
 

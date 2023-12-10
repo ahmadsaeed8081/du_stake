@@ -66,9 +66,7 @@ const Routing = ({shift_screen}) => {
 
   const [stakeAmount, setStakedAmount] = useState(0);
   const [curr_time, set_currTime] = useState(0);
-  const [selectedAmount_forReward, setSelectedAmount_forReward] = useState(null);
 
-  const [All_investments_ForReward, set_All_investments_ForReward] = useState([]);
   const [choosed_Unstake_inv, set_choosed_Unstake_inv] = useState();
   const [allInvestments, set_investmentList] = useState([]);
   const [selectedAmount, setSelectedAmount] = useState(null);
@@ -99,7 +97,6 @@ useEffect(()=>{
   {
     count++;
 
-    console.log("hello sec box"+count);
       test();
   }
 
@@ -117,12 +114,10 @@ useEffect(()=>{
     let DuBalance = await contract1.methods.balanceOf(regAddress).call();    
     set_DuBalance(DuBalance);
     
-    let curr_time = await contract.methods.get_currTime().call();    
     let min_stakeAmount = await contract.methods.minimum_investment().call();    
     let min_Withlimit = await contract.methods.minimum_withdraw_reward_limit().call();    
     let max_Withlimit = await contract.methods.maximum_withdraw_reward_limit().call();    
 
-    set_currTime(curr_time);
 
     let totalReward = await contract.methods.get_TotalReward().call({ from: regAddress });       
     let TotalInvestment = await contract.methods.getTotalInvestment().call({ from: regAddress });       
@@ -133,20 +128,15 @@ useEffect(()=>{
     let referralLevel_earning = await contract.methods.Level_earning(regAddress).call();       
     
     let Total_withdraw = await contract.methods.total_withdraw_reaward().call({ from: regAddress });
-    console.log("helo gg")
+
        
     let user = await contract.methods.user(regAddress).call();      
-    console.log("helo ggff")
  
     let bonus = await contract.methods.BonusOf(regAddress).call();       
-    console.log("helo ggff11")
 
     let allInvestments = await contract.methods.getAll_investments().call({from: regAddress});
-             console.log("bal "+allInvestments);
              
-    let All_investments_ForReward = await contract.methods
-    .getAll_investments_ForReward()
-    .call({ from: regAddress });
+  
     setHistory(history);
     set_totalInvestment(TotalInvestment)
     set_totalEarning(totalEarning)
@@ -161,8 +151,6 @@ useEffect(()=>{
 
     set_investmentList(allInvestments);
     setSelectedAmount(allInvestments[0]);
-    set_All_investments_ForReward(All_investments_ForReward)
-    setSelectedAmount_forReward(All_investments_ForReward[0])
     if(allInvestments[0])
     {
       set_choosed_Unstake_inv(allInvestments[0][3])
@@ -245,7 +233,7 @@ console.log("object done");
             path="stacking"
             element={
               <ProtectedRoute>
-                <Stacking  min_stake={min_stake}  allInvestments={allInvestments} regAddress={regAddress} DuBalance={DuBalance} ref_add={ref_add} test={test}/>
+                <Stacking isVerified={user.verified} min_stake={min_stake}  allInvestments={allInvestments} regAddress={regAddress} DuBalance={DuBalance} ref_add={ref_add} test={test}/>
               </ProtectedRoute>
             } 
           />

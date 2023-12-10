@@ -21,7 +21,7 @@ const Sidebar = () => {
       slug: "/dashboard/stacking",
     },
     { lbl: "Transaction History", slug: "/dashboard/history" },
-    { lbl: "Referral MLM", slug: "/dashboard/reward" },
+    { lbl: "Level Rewards", slug: "/dashboard/reward" },
     { lbl: "KYC Verification", slug: "/dashboard/verification" },
   ];
 
