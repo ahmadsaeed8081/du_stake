@@ -100,7 +100,7 @@ useEffect(()=>{
       test();
   }
 
-},[address,regAddress])
+},[address,regAddress,ref_add])
 
 
 
@@ -171,7 +171,8 @@ console.log("object done");
   function setuser(_value,_arr)
   {
     set_regAddress(_value)
-    set_ref(_arr.Ref_address)
+    // alert("hello "+_arr.Ref_address)
+    // set_ref(_arr.Ref_address)
 
     set_user(_arr)
 

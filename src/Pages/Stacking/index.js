@@ -27,7 +27,7 @@ const stakeTokem_Contract = {
   abi: token_abi,
 }
 const Stacking = (props) => {
-  const [selectedTab, setSelectedTab] = useState("Stacking");
+  const [selectedTab, setSelectedTab] = useState("Staking");
   const [selectedPeriodValue, setSelectedPeriodValue] = useState({
     lbl: "200 Days",
     slug: "",
@@ -155,10 +155,8 @@ let count=0;
 useEffect(()=>{
   if(count==0  || count==0 && props.allInvestments.length>0)
   {
-    // alert(props.ref)
     set_DuBalance(props.DuBalance)
     
-    console.log("hello sec box with stack"+props.regAddress);
       test1()
       count++;
   }
@@ -362,9 +360,9 @@ useEffect(()=>{
                 <div className="st-tabs flex">
                   <button
                     className={`st-btn flex-1 ${
-                      selectedTab === "Stacking" ? "active" : ""
+                      selectedTab === "Staking" ? "active" : ""
                     }`}
-                    onClick={(e) => setSelectedTab("Stacking")}
+                    onClick={(e) => setSelectedTab("Staking")}
                   >
                     Staking
                   </button>
@@ -378,11 +376,11 @@ useEffect(()=>{
                   </button>
                 </div>
                 {/* Staking Part */}
-                {selectedTab === "Stacking" ? (
+                {selectedTab === "Staking" ? (
                   <div className="staking-part flex flex-col">
                     <div className="desc p-5 flex justify-between">
-                      <p className="st-desc">APR:</p>
-                      <p className="st-desc">{selectedAPR.APR}%</p>
+                      <p className="st-desc">Daily Reward:</p>
+                      <p className="st-desc">{selectedAPR.APR}</p>
                     </div>
                     <hr class="w-full border-black " />
                     <div className="form flex flex-col p-5 gap-4 mt-6 ">
