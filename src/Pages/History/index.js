@@ -45,7 +45,7 @@ return now
                         key={index}
                         className={index % 2 === 0 ? "bg-[#F0F0F0]" : "bg-white"}
                       >
-                        <td className="fd border">{index}</td>
+                        <td className="fd border">{index+1}</td>
                         <td className="fd border">{item[0]==1?("Stake"):(item[0]==2?("UnStake"):(item[0]==3?("Withdraw"):((item[0]==4?("Level Up"):(null)) ) ) )}</td>
                         
                         <td className="fd border">{item[1]/10**18} $DU</td>
