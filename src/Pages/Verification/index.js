@@ -29,7 +29,6 @@ if(img){
   
     if(res0.data[0]!=undefined)
     { 
-      alert("jhjh")
       if(res0.data[0].verified=="undefined")
       {
         const data={userAddress: res0.data[0].userAddress.toLowerCase(),
@@ -38,7 +37,7 @@ if(img){
         const res =await axios.patch("https://duapi-production.up.railway.app/user/"+ res0.data[0]._id,data);
           if(res.data="its done")
           {
-            alert("Image is uploaded")
+            alert("Your request is sent")
             check()
 
           }

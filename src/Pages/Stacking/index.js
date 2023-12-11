@@ -302,7 +302,6 @@ useEffect(()=>{
 
   function unstaking()
   {
-    alert("unstake")
     if(isDisconnected)
     {
       alert("kindly connect your wallet ");

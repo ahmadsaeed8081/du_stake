@@ -76,9 +76,9 @@ const networkId=97;
       alert("You can't withdraw less than "+Number(minWithdraw)/10**18 +" tokens");
       return;
     }
-    if(_amount<Number(maxWithdraw)/10**18)
+    if(_amount>Number(maxWithdraw)/10**18)
     {
-      alert("You can't withdraw less than "+Number(maxWithdraw)/10**18 +" tokens");
+      alert("You can't withdraw more than "+Number(maxWithdraw)/10**18 +" tokens");
       return;
     }
     if(regAddress.toLowerCase()!=address.toLowerCase())
@@ -136,7 +136,7 @@ const networkId=97;
     },
     {
       img: "../images/medal.png",
-      title: "Referral Income",
+      title: "Direct Reward",
       price: totalRefIncome/10**18,
     },
     {
