@@ -16,8 +16,6 @@ contract DuStake
 
 
         address Staking_token = 0xd962cE68512C52F71Ca3033D43E8598049C2568F; //credit
-        address Reward_Token  = 0xd962cE68512C52F71Ca3033D43E8598049C2568F; // bel3
-        address company_add  = 0x4e28A7871B33C8358A5A116f62696d073BEc4670; 
 
 
         uint public totalusers;
@@ -45,6 +43,8 @@ contract DuStake
         uint[12] public level_tokens= [5000 *10**18,10000 *10**18,15000 *10**18,20000 *10**18,25000 *10**18,30000 *10**18,35000 *10**18,40000 *10**18,45000 *10**18,50000 *10**18,55000 *10**18,60000 *10**18];
 
         uint public totalbusiness; 
+        uint public totalwithdraw; 
+
         mapping(uint=>address) public All_investors;
 
         struct allInvestments{
@@ -147,10 +147,15 @@ contract DuStake
 
                 do
                 {
+
                     Total_TeamStakeOf[temp]+=_investedAmount;
 
-                    user[temp].totalTeam++;
-                    user[temp].level[i].count++;
+                    if(user[temp].noOfInvestment==1)
+                    {
+                        user[temp].totalTeam++;
+                        user[temp].level[i].count++;
+                    }
+
                     for(uint j=0;j<12;j++)
                     {
                         if((Total_TeamStakeOf[temp]>=level_tokens[j]) && !user[temp].level[j].eligible)
@@ -187,18 +192,20 @@ contract DuStake
             require(_investedamount > 0,"value is not greater than 0");     
             require(Token(Staking_token).allowance(msg.sender,address(this))>=_investedamount,"allowance");
 
-            if(user[msg.sender].investBefore == false )
+            if(user[msg.sender].investBefore == false && msg.sender!=owner)
             { 
                 All_investors[totalusers]=msg.sender;
                 isUser[msg.sender]=true;
-                
 
-                if(_ref==address(0) || _ref==msg.sender || _ref==company_add)
+
+                if(_ref==address(0) || _ref==msg.sender || _ref==owner)
                 {
                     
-                    user[msg.sender].referralFrom=company_add;
-                    _ref=company_add;
+                    user[msg.sender].referralFrom=owner;
+                    _ref=owner;
                     user[_ref].myReferrals.push(msg.sender);
+                    uint bon = (bonus * _investedamount)/(100*10**18);
+                    BonusOf[_ref]+=bon;
                 }
                 else 
                 {
@@ -225,12 +232,9 @@ contract DuStake
             user[msg.sender].investment[num].apr=details[choose_val].APR;
             user[msg.sender].investment[num].timeframe=(details[choose_val].timeframe/per_day_divider);  
 
-
             user[msg.sender].totalInvestment+=_investedamount;
             user[msg.sender].noOfInvestment++;
             totalbusiness+=_investedamount;
-
-            
 
             Token(Staking_token).transferFrom(msg.sender,address(this),_investedamount);
             user_investments[msg.sender][num] = user[msg.sender].investment[num];
@@ -285,7 +289,7 @@ contract DuStake
 
 
 
-        function getReward_perInv(uint i,uint point) view public returns(uint){ //this function is get the total reward balance of the investor
+        function getReward_perInv(uint i,uint point) view public returns(uint){ 
             uint totalReward;
             uint depTime;
             uint rew;
@@ -312,25 +316,25 @@ contract DuStake
                     {
                         if(user[msg.sender].investment[i].apr==100)
                         {
-                            apr=66;
+                            apr=66.6 ether;
                         }
                         else{
-                            apr=172;
+                            apr=173.2 ether;
 
                         }
                     }
                     else{
                         if(user[msg.sender].investment[i].apr==100)
                         {
-                            apr=100;
+                            apr=100 ether;
                         }
                         else{
-                            apr=200;
+                            apr=200 ether;
 
                         }
                     }
 
-                     rew  =  (((user[msg.sender].investment[i].investedAmount * ((user[msg.sender].investment[i].apr) *10**18) )/ (100*10**18) )/(user[msg.sender].investment[i].timeframe));
+                     rew  =  (((user[msg.sender].investment[i].investedAmount * apr  )/ (100*10**18) )/(user[msg.sender].investment[i].timeframe));
 
 
                     totalReward += depTime * rew;
@@ -384,6 +388,7 @@ contract DuStake
             require(user[msg.sender].investment[num].investedAmount>0,"you dont have investment to withdrawn");            
             require(!user[msg.sender].investment[num].unstake ,"you have withdrawn");
             uint amount=user[msg.sender].investment[num].investedAmount;
+            totalbusiness-=amount;
 
 
             if(user[msg.sender].investment[num].withdrawnTime > block.timestamp)
@@ -399,7 +404,7 @@ contract DuStake
 
             user[msg.sender].totalInvestment-=user[msg.sender].investment[num].investedAmount;
             user_investments[msg.sender][num] = user[msg.sender].investment[num];
-            
+
             uint temp=trasactionCount[msg.sender];
             historyOf[msg.sender][temp].events=2;
             historyOf[msg.sender][temp].amount=amount;
@@ -437,12 +442,13 @@ contract DuStake
             require(_vlaue >= minimum_withdraw_reward_limit && _vlaue <= maximum_withdraw_reward_limit ,"limit issue");     //ensuring that investment amount is not less than zero
 
             require(Total_reward>=_vlaue,"you dont have rewards to withdrawn");         //ensuring that if the investor have rewards to withdraw
-        
+            totalwithdraw+=_vlaue;
+
             uint withdraw_fee=(_vlaue*(withdrawfee))/(100*10**18);
             Token(Staking_token).transfer(owner,withdraw_fee);            
             _vlaue=_vlaue-withdraw_fee;
 
-            Token(Reward_Token).transfer(msg.sender,_vlaue);             // transfering the reward to investor             
+            Token(Staking_token).transfer(msg.sender,_vlaue);             // transfering the reward to investor             
             user[msg.sender].totalWithdraw_reward+=_vlaue;
             uint temp=trasactionCount[msg.sender];
 
@@ -455,37 +461,46 @@ contract DuStake
 
         }
 
-         function getAll_investments() public view returns (allInvestments[] memory Invested) { //this function will return the all investments of the investor and withware date
+        function getAll_investments() public view returns (allInvestments[] memory Invested)
+        { 
             uint num = user[msg.sender].noOfInvestment;
             uint temp;
             uint currentIndex;
             
             for(uint i=0;i<num;i++)
             {
-               if(!user[msg.sender].investment[i].unstake )
-               {
+               if(!user[msg.sender].investment[i].unstake ){
                    temp++;
                }
 
             }
          
+           allInvestments[] memory temp_arr =  new allInvestments[](temp) ;
             Invested =  new allInvestments[](temp) ;
 
             for(uint i=0;i<num;i++)
             {
                if( !user[msg.sender].investment[i].unstake ){
 
-                   Invested[currentIndex]=user[msg.sender].investment[(num-1)-i];
-                    // Invested[currentIndex].reward=getReward_perInv((num-1)-i,msg.sender);
+                   temp_arr[currentIndex]=user[msg.sender].investment[i];
+                //    temp_arr[currentIndex].reward=getReward_perInv(i);
 
                    currentIndex++;
                }
 
             }
+
+            uint count=temp;
+            for(uint i=0;i<temp;i++)
+            {
+                count--;
+                Invested[i]=temp_arr[count];
+
+            }
+
             return Invested;
 
         }
-
         function getAll_investments_ForReward() public view returns (allInvestments[] memory Invested) { //this function will return the all investments of the investor and withware date
             uint num = user[msg.sender].noOfInvestment;
         
@@ -621,15 +636,7 @@ contract DuStake
             
 
         }
-        function get_currTime() public view returns(uint)
-        {
-            return block.timestamp;
-        }
         
-        function get_withdrawnTime(uint num) public view returns(uint)
-        {
-            return user[msg.sender].investment[num].withdrawnTime;
-        }
 
 
 
@@ -644,6 +651,12 @@ contract DuStake
             Token(Staking_token).transfer(Staking_token,_amount); 
         }
 
+        //updtae values
+
+        function update_minimum_investment(uint inv) public
+        {
+            minimum_investment=inv;
+        }
 
 
     } 

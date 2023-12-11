@@ -99,7 +99,7 @@ const Registration = () => {
         return
       }
       let user = await contract.methods.user(ref).call();
-      if(!isValidAddress(user[3]))
+      if(!(user[3]))
       {
         alert("'Referral Address' is not registered")
         return
