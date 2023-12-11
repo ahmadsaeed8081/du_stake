@@ -172,7 +172,7 @@ console.log("object done");
   {
     set_regAddress(_value)
     // alert("hello "+_arr.Ref_address)
-    // set_ref(_arr.Ref_address)
+    set_ref(_arr.Ref_address)
 
     set_user(_arr)
 

@@ -155,6 +155,7 @@ let count=0;
 useEffect(()=>{
   if(count==0  || count==0 && props.allInvestments.length>0)
   {
+    alert( props.ref_add);
     set_DuBalance(props.DuBalance)
     
       test1()
