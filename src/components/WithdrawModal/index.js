@@ -21,7 +21,7 @@ const WithdrawModal = ({withdraw}) => {
           />
         </div> */}
         <div className="input-field flex flex-col mb-4">
-          <h1 className="lbl mb-2">Amount (Min 10(DU) - Max 2500(DU))</h1>
+          <h1 className="lbl mb-2">Amount (Min 1(DU) - Max 2500(DU))</h1>
           <input type="number" 
           className="txt"
           min={0}
