@@ -205,8 +205,8 @@ const networkId=97;
                 ))}
               </div>
               <div className="d-link mt-10">
-                <p className="d-par">Referral Link : {window.location.origin}/?ref={regAddress?regAddress.slice(0,4)+"...."+regAddress.slice(38,42):"kindly connect"}</p>
-                <CopyToClipboard text={`${window.location.origin}/?ref=${regAddress}`} >
+                <p className="d-par">Referral Link : {window.location.origin}/auth/register/?ref={regAddress?regAddress.slice(0,4)+"...."+regAddress.slice(38,42):"kindly connect"}</p>
+                <CopyToClipboard text={`${window.location.origin}/auth/register/?ref=${regAddress}`} >
                         <button className="copy-icon flex items-center justify-center" onClick={notify}>
                           <PiCopySimpleFill color='white' className=' text-2xl'  />
                         </button>

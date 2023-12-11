@@ -9,14 +9,14 @@ import { useLocation } from 'react-router-dom';
 import { cont_address,token_Address,cont_abi,token_abi } from "../../components/config";
 
 const Registration = () => {
-
+  let count=0;
   const dispatch = useDispatch();
 
   const navigate = useNavigate();
 
   const location = useLocation();
   const params = new URLSearchParams(location.search);
-  const temp_address = params.get("address");
+  const temp_address = params.get("ref");
 
   
 
@@ -126,7 +126,12 @@ const Registration = () => {
 
   }
 
-
+useEffect(()=>{
+  if(count==0)
+  console.log("hello "+temp_address);
+  set_ref(temp_address);
+  count++;
+},[temp_address])
 
 
   return (
