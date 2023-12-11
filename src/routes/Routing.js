@@ -117,13 +117,22 @@ useEffect(()=>{
     let min_stakeAmount = await contract.methods.minimum_investment().call();    
     let min_Withlimit = await contract.methods.minimum_withdraw_reward_limit().call();    
     let max_Withlimit = await contract.methods.maximum_withdraw_reward_limit().call();    
+    alert("h1")
 
 
-    let totalReward = await contract.methods.get_TotalReward().call({ from: regAddress });       
-    let TotalInvestment = await contract.methods.getTotalInvestment().call({ from: regAddress });       
-    let totalEarning = await contract.methods.get_totalEarning().call({ from: regAddress });       
+    let totalReward = await contract.methods.get_TotalReward().call({ from: regAddress });   
+    
+    let TotalInvestment = await contract.methods.getTotalInvestment().call({ from: regAddress });  
+    let totalEarning; 
+    try{
+       totalEarning = await contract.methods.get_totalEarning().call({ from: regAddress });   
+
+     }
+     catch{
+      
+     }
+    
     let history = await contract.methods.get_history(regAddress).call({ from: regAddress });
-       
     let referralLevel_count = await contract.methods.Level_count(regAddress).call();       
     let referralLevel_earning = await contract.methods.Level_earning(regAddress).call();       
     
