@@ -225,6 +225,7 @@ const networkId=97;
               </div>
 
             </div>
+            {loader && <Loader />}
 
           </div>
         </div>
@@ -236,7 +237,6 @@ const networkId=97;
         <WithdrawModal withdraw={withdraw} />
       </Modal>
 
-      {loader && <Loader />}
 
     </Wrapper>
     
