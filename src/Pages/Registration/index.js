@@ -49,27 +49,30 @@ const Registration = () => {
 
     const web3= new Web3(new Web3.providers.HttpProvider("https://endpoints.omniatech.io/v1/bsc/testnet/public	"));
     const contract=new web3.eth.Contract(cont_abi,cont_address);
-
+    let response;
     try{
 
-      const userData=await Axios.get("https://duapi-production.up.railway.app/getdatabymail?"+ new URLSearchParams({
+       response=await Axios.get("https://duapi-production.up.railway.app/getdatabymail?"+ new URLSearchParams({
         Email: email,})
-      ).then((response)=>{
-        if(response.data[0].Email==email)
+      )
+    }catch(e){
+    }
+      console.log(response);
+      if(response.data.length>0)
         {
           alert("Email is already Registered")
           return;
         }
+    let userData;
+    try{
 
-        if(response.data[0].userAddress==address.toLowerCase())
-        {
-          alert("Wallet Address is already Registered")
-          return;
-        }
-
-
-      })
+       userData= await Axios.get("https://duapi-production.up.railway.app/getdatabyaddress?"+ new URLSearchParams({userAddress: address.toLowerCase(),}))
     }catch(e){
+    }
+    if(userData.data.length>0)
+    {
+      alert("Wallet Address is already Registered")
+      return;
     }
     if(password.length<8)
     {
@@ -91,7 +94,7 @@ const Registration = () => {
       alert("'Your Wallet Address' doesn't look like an address")
       return
     }
-    if(ref!="")
+    if(ref!="" && ref!=null && ref!="0x0000000000000000000000000000000000000000")
     {
       if(!isValidAddress(ref))
       {
@@ -129,7 +132,15 @@ const Registration = () => {
 useEffect(()=>{
   if(count==0)
   console.log("hello "+temp_address);
-  set_ref(temp_address);
+  if(temp_address!=null)
+  {
+    set_ref(temp_address);
+
+  }
+  else{
+    set_ref("0x0000000000000000000000000000000000000000");
+
+  }
   count++;
 },[temp_address])
 
