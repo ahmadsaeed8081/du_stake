@@ -51,29 +51,27 @@ const Registration = () => {
     const contract=new web3.eth.Contract(cont_abi,cont_address);
     let response;
     try{
-
        response=await Axios.get("https://duapi-production.up.railway.app/getdatabymail?"+ new URLSearchParams({
         Email: email,})
       )
     }catch(e){
     }
-      // console.log(response);
-      // if(response.data.length>0)
-      //   {
-      //     alert("Email is already Registered")
-      //     return;
-      //   }
+      if(response.data.length>0)
+        {
+          alert("Email is already Registered")
+          return;
+        }
     let userData;
     try{
 
        userData= await Axios.get("https://duapi-production.up.railway.app/getdatabyaddress?"+ new URLSearchParams({userAddress: address.toLowerCase(),}))
     }catch(e){
     }
-    // if(userData.data.length>0)
-    // {
-    //   alert("Wallet Address is already Registered")
-    //   return;
-    // }
+    if(userData.data.length>0)
+    {
+      alert("Your Wallet Address is already Registered")
+      return;
+    }
     if(password.length<8)
     {
       alert("Password length cannot be less than 8 characters")
@@ -101,12 +99,27 @@ const Registration = () => {
         alert("'Referral Address' doesn't look like an address")
         return
       }
-      let user = await contract.methods.user(ref).call();
-      if(!(user[3]))
+      let userData1;
+      try{
+
+        userData1= await Axios.get("https://duapi-production.up.railway.app/getdatabyaddress?"+ new URLSearchParams({userAddress: ref.toLowerCase(),}))
+      }
+      catch(e){}  
+      if(userData1.data.length>0)
+      {
+        if(userData1.data[0].verified!="verified")
+        {
+          alert("'Referral Address' is not registered")
+          return
+        }
+
+      } 
+      else
       {
         alert("'Referral Address' is not registered")
         return
-      }   
+      }  
+      
     }else{
       set_ref("0x0000000000000000000000000000000000000000");
     }
@@ -131,7 +144,6 @@ const Registration = () => {
 
 useEffect(()=>{
   if(count==0)
-  console.log("hello "+temp_address);
   if(temp_address!=null)
   {
     set_ref(temp_address);
