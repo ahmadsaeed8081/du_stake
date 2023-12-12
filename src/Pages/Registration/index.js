@@ -57,23 +57,23 @@ const Registration = () => {
       )
     }catch(e){
     }
-      console.log(response);
-      if(response.data.length>0)
-        {
-          alert("Email is already Registered")
-          return;
-        }
+      // console.log(response);
+      // if(response.data.length>0)
+      //   {
+      //     alert("Email is already Registered")
+      //     return;
+      //   }
     let userData;
     try{
 
        userData= await Axios.get("https://duapi-production.up.railway.app/getdatabyaddress?"+ new URLSearchParams({userAddress: address.toLowerCase(),}))
     }catch(e){
     }
-    if(userData.data.length>0)
-    {
-      alert("Wallet Address is already Registered")
-      return;
-    }
+    // if(userData.data.length>0)
+    // {
+    //   alert("Wallet Address is already Registered")
+    //   return;
+    // }
     if(password.length<8)
     {
       alert("Password length cannot be less than 8 characters")
