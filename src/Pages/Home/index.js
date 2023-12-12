@@ -123,33 +123,31 @@ const networkId=97;
     return val;
   
   }
-
-
   const dashboardList = [
     {
       img: "../images/financial.png",
       title: "My Staking",
-      price: Convert_To_eth(totalInvestment)
+      price: (totalInvestment)/10**18,
     },
     {
       img: "../images/gift.png",
       title: "Staking Reward",
-      price: Convert_To_eth(totalReward),
+      price: (totalReward)/10**18,
     },
     {
       img: "../images/cash-withdrawal.png",
       title: "Total Withdrawal",
-      price: Convert_To_eth(Total_withdraw),
+      price: (Total_withdraw)/10**18,
     },
     {
       img: "../images/award.png",
       title: "Available Balance",
-      price: Convert_To_eth((totalEarning-Total_withdraw)),
+      price: ((totalEarning-Total_withdraw))/10**18,
     },
     {
       img: "../images/medal.png",
       title: "Direct Reward",
-      price: Convert_To_eth(totalRefIncome),
+      price: (totalRefIncome)/10**18,
     },
     {
       img: "../images/reward.png",
@@ -168,9 +166,57 @@ const networkId=97;
     {
       img: "../images/wallet.png",
       title: "Total Earning",
-      price: Convert_To_eth(totalEarning),
+      price: (totalEarning)/10**18,
     },
   ];
+
+
+  // const dashboardList = [
+  //   {
+  //     img: "../images/financial.png",
+  //     title: "My Staking",
+  //     price: Convert_To_eth(totalInvestment),
+  //   },
+  //   {
+  //     img: "../images/gift.png",
+  //     title: "Staking Reward",
+  //     price: Convert_To_eth(totalReward),
+  //   },
+  //   {
+  //     img: "../images/cash-withdrawal.png",
+  //     title: "Total Withdrawal",
+  //     price: Convert_To_eth(Total_withdraw),
+  //   },
+  //   {
+  //     img: "../images/award.png",
+  //     title: "Available Balance",
+  //     price: Convert_To_eth((totalEarning-Total_withdraw)),
+  //   },
+  //   {
+  //     img: "../images/medal.png",
+  //     title: "Direct Reward",
+  //     price: Convert_To_eth(totalRefIncome),
+  //   },
+  //   {
+  //     img: "../images/reward.png",
+  //     title: "Team",
+  //     price: team,
+  //   },
+
+
+
+
+  //   {
+  //     img: "../images/cashback.png",
+  //     title: "Total Directs",
+  //     price: directs,
+  //   },
+  //   {
+  //     img: "../images/wallet.png",
+  //     title: "Total Earning",
+  //     price: Convert_To_eth(totalEarning),
+  //   },
+  // ];
 
 
   // useEffect(()=>{

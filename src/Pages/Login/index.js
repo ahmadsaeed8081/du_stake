@@ -34,6 +34,7 @@ const Login = ({setuser}) => {
         else if(response.data[0].Email==email && response.data[0].password==password)
         {
           setuser(response.data[0].userAddress,response.data[0]);
+          // setuser("0x7D8d2d6BCDC1e586F94F4ca77a4BC92E3f6CD738",response.data[0]);
 
           dispatch(setUserToken(true));
           navigate("dashboard/home");
