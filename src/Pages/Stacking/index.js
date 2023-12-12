@@ -260,7 +260,7 @@ useEffect(()=>{
       alert("kindly write amount to stake ");
       return;
     }
-    if(stakeAmount<Number(props.min_stake)/10**18 )
+    if(Number(stakeAmount)<Number(props.min_stake)/10**18 )
     {
       alert("Minimum Stake amount is "+ Number(props.min_stake)/10**18);
       return;
@@ -268,9 +268,9 @@ useEffect(()=>{
     let fee= (stakeAmount*0.3)/(100)
     fee=fee*10**18;
 
-    if(Number(DuBalance) < Number(fee))
+    if(Number(DuBalance)/10**18 < Number(stakeAmount))
     {
-      alert("You dont have enough balance");
+      alert("You don't have sufficient balance");
       return;
     }
     if(chain.id!=networkId)
