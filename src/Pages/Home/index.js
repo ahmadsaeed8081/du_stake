@@ -117,34 +117,39 @@ const networkId=97;
     
 
   }
-
+  function Convert_To_eth( val){
+    const web3= new Web3(new Web3.providers.HttpProvider("https://bsc-testnet.publicnode.com	"));
+    val= web3.utils.fromWei(val.toString(),"ether");
+    return val;
+  
+  }
 
 
   const dashboardList = [
     {
       img: "../images/financial.png",
       title: "My Staking",
-      price: totalInvestment/10**18,
+      price: Convert_To_eth(totalInvestment)
     },
     {
       img: "../images/gift.png",
       title: "Staking Reward",
-      price: totalReward/10**18,
+      price: Convert_To_eth(totalReward),
     },
     {
       img: "../images/cash-withdrawal.png",
       title: "Total Withdrawal",
-      price: Total_withdraw/10**18,
+      price: Convert_To_eth(Total_withdraw),
     },
     {
       img: "../images/award.png",
       title: "Available Balance",
-      price: (totalEarning-Total_withdraw)/10**18,
+      price: Convert_To_eth((totalEarning-Total_withdraw)),
     },
     {
       img: "../images/medal.png",
       title: "Direct Reward",
-      price: totalRefIncome/10**18,
+      price: Convert_To_eth(totalRefIncome),
     },
     {
       img: "../images/reward.png",
@@ -163,7 +168,7 @@ const networkId=97;
     {
       img: "../images/wallet.png",
       title: "Total Earning",
-      price: totalEarning/10**18,
+      price: Convert_To_eth(totalEarning),
     },
   ];
 
