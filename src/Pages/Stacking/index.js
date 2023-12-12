@@ -63,7 +63,7 @@ const Stacking = (props) => {
 
   const { chain } = useNetwork()
 
-  const id="12";
+  const id="76536888";
   const { address, isConnecting ,isDisconnected} = useAccount()
   const networkId=97;
 let count=0;
@@ -155,7 +155,6 @@ let count=0;
 useEffect(()=>{
   if(count==0  || count==0 && props.allInvestments.length>0)
   {
-    alert( props.ref_add);
     set_DuBalance(props.DuBalance)
     
       test1()
@@ -218,29 +217,13 @@ useEffect(()=>{
 
     function test1(){
 
-      // alert(props.regAddress)
-    // const web3= new Web3(new Web3.providers.HttpProvider("https://bsc-testnet.publicnode.com	"));
-  
-              
-    // const contract=new web3.eth.Contract(token_abi,token_Address);
-    // let curr_time = await contract.methods.balanceOf(regAddres).call();    
-    // set_DuBalance(curr_time);
-    // console.log("balance "+curr_time);
-  
 
-  //   let allInvestments = await contract.methods.getAll_investments().call({from: address});
-  //            console.log("bal "+allInvestments);
-  //   let All_investments_ForReward = await contract.methods.getAll_investments_ForReward().call({ from: address });
-       
-    
     console.log(props.allInvestments);
 
 
     set_investmentList(props.allInvestments);
     setSelectedAmount(props.allInvestments[0]);
-    // alert(allInvestments)
-    // set_All_investments_ForReward(All_investments_ForReward)
-    // setSelectedAmount_forReward(All_investments_ForReward[0])
+
     if(props.allInvestments[0])
     {
       set_choosed_Unstake_inv(props.allInvestments[0][3])
@@ -313,19 +296,7 @@ useEffect(()=>{
       alert("kindly change your crypto wallet to the Registered wallet")
       return;
     }
-    console.log("object unstake "+choosed_Unstake_inv);
-    // if(stakeAmount==0 )
-    // {
-    //   alert("kindly write amount to stake ");
-    //   return;
-    // }
 
-
-    // if(Number(data[10].result) < Number(fee))
-    // {
-    //   alert("You dont have enough balance");
-    //   return;
-    // }
     if(chain.id!=networkId)
     {
       unstake_switch?.();
@@ -333,7 +304,6 @@ useEffect(()=>{
       unstake?.()
 
     }
-    // console.log(data__unstake);
     
 
   }
@@ -397,10 +367,13 @@ useEffect(()=>{
                       </div>
                       <div className="input_field flex flex-col mb-3">
                         <div className="flex items-center justify-between gap-2 mb-1">
-                          <h1 className="lbl">Select Amount:</h1>
-                          <h1 className="lbl">Balance: {DuBalance>0?(Number(DuBalance)/10**18).toFixed(2):0} $DU</h1>
+                          <h1 className="lbl">Amount: (Minimum 10 DU)</h1>
+                          {/* <h1 className="lbl mb-2">Amount (Min 1 DU - Max 2500DU)</h1> */}
+
+                          <h1 className="lbl">Balance: {DuBalance>0?(Number(DuBalance)/10**18).toFixed(2):0} DU</h1>
                         </div>
                         <div className="input-box flex items-center">
+
                           <input type="number" 
                           className="txt cleanbtn w-full" 
                           min={0}
@@ -411,7 +384,7 @@ useEffect(()=>{
 
 
                           <div className="flex items-center gap-1">
-                            <h1 className="plp-lbl">$DU</h1>
+                            <h1 className="plp-lbl">DU</h1>
                             <div className="max-lbl"onClick={(e)=>setStakedAmount((Number(DuBalance)/10**18))} >MAX </div>
                           </div>
                         </div>
@@ -469,11 +442,11 @@ useEffect(()=>{
                     <div
                       className={`block flex aic abs ${hide5 ? "show" : ""}`}
                       >
-                      <div className="manue flex aic col anim">
+                      <div className="manue flex aic col anim" style={{ background:"white",color:"black",border:"1px solid #7a7a7a",borderRadius:"4px"}}>
                         {allInvestments.map((item, index) => (
                           <div
                             key={index}
-                            className="slt flex aic"
+                            className="slt flex aic" 
                             onClick={(e) => {
                               setHide5(!hide5);
                               console.log(hide5);
@@ -481,8 +454,8 @@ useEffect(()=>{
                               set_choosed_Unstake_inv(item[3])
                             }}
                           >
-                            <div className="unit-name flex aic font s14 b4">
-                              <span className="unit-eng flex aic font s14 b4">
+                            <div className="unit-name flex aic font s14 b4" >
+                              <span className="unit-eng flex aic font s14 b4" style={{color:"black" }}>
                                 {Number(item[0])/10**18}
                               </span>
                               {/* <span className="unit-eng flex aic font s14 b4">

@@ -16,6 +16,7 @@ import Verification from "../Pages/Verification";
 import History from "../Pages/History";
 import Profile from "../Pages/Profile";
 import Web3 from "web3";
+
 import {useNetwork,  useSwitchNetwork } from 'wagmi'
 import { useAccount, useDisconnect } from 'wagmi'
 import { cont_address,token_Address,cont_abi,token_abi } from "../components/config";
@@ -28,7 +29,8 @@ const stakeTokem_Contract = {
   address: token_Address,
   abi: token_abi,
 }
-const Routing = ({shift_screen}) => {
+const Routing = () => {
+  const [loader, setLoader] = useState(false);
 
 
   const APRList = [
@@ -65,7 +67,7 @@ const Routing = ({shift_screen}) => {
   const [DuBalance, set_DuBalance] = useState(0);
 
   const [stakeAmount, setStakedAmount] = useState(0);
-  const [curr_time, set_currTime] = useState(0);
+  const [todaywithdraw, set_todaywithdraw] = useState(false);
 
   const [choosed_Unstake_inv, set_choosed_Unstake_inv] = useState();
   const [allInvestments, set_investmentList] = useState([]);
@@ -100,11 +102,12 @@ useEffect(()=>{
       test();
   }
 
-},[address,regAddress,ref_add])
+},[regAddress,ref_add])
 
 
 
   async function test(){
+    setLoader(true)
     const web3= new Web3(new Web3.providers.HttpProvider("https://endpoints.omniatech.io/v1/bsc/testnet/public	"));
   
               
@@ -112,14 +115,15 @@ useEffect(()=>{
     const contract=new web3.eth.Contract(cont_abi,cont_address);
     const contract1=new web3.eth.Contract(token_abi,token_Address);
     let DuBalance = await contract1.methods.balanceOf(regAddress).call();    
-    set_DuBalance(DuBalance);
     
     let min_stakeAmount = await contract.methods.minimum_investment().call();    
     let min_Withlimit = await contract.methods.minimum_withdraw_reward_limit().call();    
-    let max_Withlimit = await contract.methods.maximum_withdraw_reward_limit().call();    
-    alert("h1")
+    let max_Withlimit = await contract.methods.maximum_withdraw_reward_limit().call();
+    let curr_day = await contract.methods.get_DayNum().call();   
+    
+    let todaywithdraw = await contract.methods.todaywithdraw(regAddress,curr_day).call();   
 
-
+    
     let totalReward = await contract.methods.get_TotalReward().call({ from: regAddress });   
     
     let TotalInvestment = await contract.methods.getTotalInvestment().call({ from: regAddress });  
@@ -144,8 +148,10 @@ useEffect(()=>{
     let bonus = await contract.methods.BonusOf(regAddress).call();       
 
     let allInvestments = await contract.methods.getAll_investments().call({from: regAddress});
-             
-  
+
+    set_DuBalance(DuBalance);
+         
+    set_todaywithdraw(todaywithdraw)
     setHistory(history);
     set_totalInvestment(TotalInvestment)
     set_totalEarning(totalEarning)
@@ -167,20 +173,16 @@ useEffect(()=>{
     }    
     set_totalReward(totalReward);
     set_Total_withdraw(Total_withdraw);
-    let temp;
-    // for(var i=0;i<12;i++)
-    // {
-    //   temp+=referralLevel_earning[i];
-    // }
-    
 
-console.log("object done");
+    setLoader(false)
+
+
+  console.log("object done");
   }  
 
   function setuser(_value,_arr)
   {
     set_regAddress(_value)
-    // alert("hello "+_arr.Ref_address)
     set_ref(_arr.Ref_address)
 
     set_user(_arr)
@@ -227,7 +229,7 @@ console.log("object done");
             path="home"
             element={
               <ProtectedRoute>
-                <Home   minWithdraw={minWithdraw} maxWithdraw={maxWithdraw} test={test} totalRefIncome={totalRefIncome}  totalReward={totalReward} totalInvestment={totalInvestment} Total_withdraw={Total_withdraw} totalEarning={totalEarning} directs={directs} team={team}  regAddress={regAddress}     set_regAddress={set_regAddress}    />
+                <Home loader={loader} todaywithdraw={todaywithdraw} minWithdraw={minWithdraw} maxWithdraw={maxWithdraw} test={test} totalRefIncome={totalRefIncome}  totalReward={totalReward} totalInvestment={totalInvestment} Total_withdraw={Total_withdraw} totalEarning={totalEarning} directs={directs} team={team}  regAddress={regAddress}     set_regAddress={set_regAddress}    />
               </ProtectedRoute>
             }
           />
@@ -243,7 +245,7 @@ console.log("object done");
             path="stacking"
             element={
               <ProtectedRoute>
-                <Stacking isVerified={user.verified} min_stake={min_stake}  allInvestments={allInvestments} regAddress={regAddress} DuBalance={DuBalance} ref_add={ref_add} test={test}/>
+                <Stacking   isVerified={user.verified} min_stake={min_stake}  allInvestments={allInvestments} regAddress={regAddress} DuBalance={DuBalance} ref_add={ref_add} test={test}/>
               </ProtectedRoute>
             } 
           />
@@ -274,7 +276,9 @@ console.log("object done");
           />
         </Route>
       </Routes>
+
     </BrowserRouter>
+    
   );
 };
 

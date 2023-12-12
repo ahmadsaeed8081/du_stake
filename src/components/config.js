@@ -1,4 +1,4 @@
-export const cont_address="0x4498c0875E51adA6c3BB69F6AbA33aA0F285EDDF";
+export const cont_address="0x7fC0F8D9A2A6B06eA498F5E7443adAaB727D21c8";
 export const token_Address="0xd962cE68512C52F71Ca3033D43E8598049C2568F";
 
 export const cont_abi=[
@@ -12,25 +12,6 @@ export const cont_abi=[
 		],
 		"stateMutability": "nonpayable",
 		"type": "constructor"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "uint256",
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"name": "All_investors",
-		"outputs": [
-			{
-				"internalType": "address",
-				"name": "",
-				"type": "address"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
 	},
 	{
 		"inputs": [
@@ -217,11 +198,6 @@ export const cont_abi=[
 					},
 					{
 						"internalType": "uint256",
-						"name": "reward",
-						"type": "uint256"
-					},
-					{
-						"internalType": "uint256",
 						"name": "apr",
 						"type": "uint256"
 					},
@@ -240,60 +216,34 @@ export const cont_abi=[
 		"type": "function"
 	},
 	{
-		"inputs": [],
-		"name": "getAll_investments_ForReward",
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "i",
+				"type": "uint256"
+			},
+			{
+				"internalType": "address",
+				"name": "inv",
+				"type": "address"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_level",
+				"type": "uint256"
+			},
+			{
+				"internalType": "address",
+				"name": "main",
+				"type": "address"
+			}
+		],
+		"name": "getLevelReward_perInv",
 		"outputs": [
 			{
-				"components": [
-					{
-						"internalType": "uint256",
-						"name": "investedAmount",
-						"type": "uint256"
-					},
-					{
-						"internalType": "uint256",
-						"name": "withdrawnTime",
-						"type": "uint256"
-					},
-					{
-						"internalType": "uint256",
-						"name": "DepositTime",
-						"type": "uint256"
-					},
-					{
-						"internalType": "uint256",
-						"name": "investmentNum",
-						"type": "uint256"
-					},
-					{
-						"internalType": "uint256",
-						"name": "unstakeTime",
-						"type": "uint256"
-					},
-					{
-						"internalType": "bool",
-						"name": "unstake",
-						"type": "bool"
-					},
-					{
-						"internalType": "uint256",
-						"name": "reward",
-						"type": "uint256"
-					},
-					{
-						"internalType": "uint256",
-						"name": "apr",
-						"type": "uint256"
-					},
-					{
-						"internalType": "uint256",
-						"name": "timeframe",
-						"type": "uint256"
-					}
-				],
-				"internalType": "struct DuStake.allInvestments[]",
-				"name": "Invested",
-				"type": "tuple[]"
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
 			}
 		],
 		"stateMutability": "view",
@@ -326,6 +276,19 @@ export const cont_abi=[
 	{
 		"inputs": [],
 		"name": "getTotalInvestment",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "get_DayNum",
 		"outputs": [
 			{
 				"internalType": "uint256",
@@ -374,11 +337,6 @@ export const cont_abi=[
 					{
 						"internalType": "uint256",
 						"name": "time",
-						"type": "uint256"
-					},
-					{
-						"internalType": "uint256",
-						"name": "total",
 						"type": "uint256"
 					}
 				],
@@ -451,30 +409,19 @@ export const cont_abi=[
 				"internalType": "uint256",
 				"name": "time",
 				"type": "uint256"
-			},
-			{
-				"internalType": "uint256",
-				"name": "total",
-				"type": "uint256"
 			}
 		],
 		"stateMutability": "view",
 		"type": "function"
 	},
 	{
-		"inputs": [
-			{
-				"internalType": "address",
-				"name": "",
-				"type": "address"
-			}
-		],
-		"name": "isUser",
+		"inputs": [],
+		"name": "launch_time",
 		"outputs": [
 			{
-				"internalType": "bool",
+				"internalType": "uint256",
 				"name": "",
-				"type": "bool"
+				"type": "uint256"
 			}
 		],
 		"stateMutability": "view",
@@ -597,6 +544,30 @@ export const cont_abi=[
 		"type": "function"
 	},
 	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			},
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"name": "todaywithdraw",
+		"outputs": [
+			{
+				"internalType": "bool",
+				"name": "",
+				"type": "bool"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
 		"inputs": [],
 		"name": "total_withdraw_reaward",
 		"outputs": [
@@ -702,6 +673,84 @@ export const cont_abi=[
 	{
 		"inputs": [
 			{
+				"internalType": "uint256",
+				"name": "inv",
+				"type": "uint256"
+			}
+		],
+		"name": "update_Unstake_penalty",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_key",
+				"type": "uint256"
+			}
+		],
+		"name": "update_key",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "inv",
+				"type": "uint256"
+			}
+		],
+		"name": "update_maximum_withdraw_reward_limit",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "inv",
+				"type": "uint256"
+			}
+		],
+		"name": "update_minimum_investment",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "inv",
+				"type": "uint256"
+			}
+		],
+		"name": "update_minimum_withdraw_reward_limit",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "inv",
+				"type": "uint256"
+			}
+		],
+		"name": "update_withdrawfee",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
 				"internalType": "address",
 				"name": "",
 				"type": "address"
@@ -792,11 +841,6 @@ export const cont_abi=[
 				"internalType": "bool",
 				"name": "unstake",
 				"type": "bool"
-			},
-			{
-				"internalType": "uint256",
-				"name": "reward",
-				"type": "uint256"
 			},
 			{
 				"internalType": "uint256",

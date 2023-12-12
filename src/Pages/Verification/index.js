@@ -6,7 +6,6 @@ import axios  from "axios";
 const Verification = (props) => {
   const [img, setImg] = useState('');
   const [status, set_status] = useState();
-  const [count, set_count] = useState(0);
 
 // let count=0;
 
@@ -87,7 +86,6 @@ useEffect(()=>{
   if(props.regAddress )
   {
     check();
-    console.log("hello " +status);
 
   }
 },[props.regAddress])

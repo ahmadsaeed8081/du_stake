@@ -2,6 +2,7 @@ import React, { useState,useEffect } from "react";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import {PiCopySimpleFill} from 'react-icons/pi';
 import { useLocation } from 'react-router-dom';
+import Loader from "../../components/Loader";
 
 import Modal from "../../components/Modal";
 import Wrapper from "../../routes/Wrapper";
@@ -10,13 +11,14 @@ import { CopyIcon } from "../../assets/Icons";
 import WithdrawModal from "../../components/WithdrawModal";
 import { cont_address,token_Address,cont_abi,token_abi } from "../../components/config";
 import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 import Web3 from "web3";
 import {useNetwork,  useSwitchNetwork } from 'wagmi'
 
 import { useAccount, useDisconnect } from 'wagmi'
 import { useContractReads,useContractRead ,useContractWrite, usePrepareContractWrite, useWaitForTransaction } from 'wagmi'
-const Main = ({totalReward,totalInvestment,Total_withdraw,totalEarning,directs,team,set_regAddress,regAddress,totalRefIncome,test , minWithdraw, maxWithdraw}) => {
+const Main = ({loader,todaywithdraw,totalReward,totalInvestment,Total_withdraw,totalEarning,directs,team,set_regAddress,regAddress,totalRefIncome,test , minWithdraw, maxWithdraw}) => {
   const [open, setOpen] = useState(false);
   const [count, set_count] = useState(0);
   const [withdrawAmount, set_withdrawAmount] = useState(0);
@@ -69,6 +71,11 @@ const networkId=97;
     if(isDisconnected)
     {
       alert("kindly connect your wallet ");
+      return;
+    }
+    if(todaywithdraw)
+    {
+      alert("You can only withdraw once in a day")
       return;
     }
     if(_amount<Number(minWithdraw)/10**18)
@@ -173,12 +180,14 @@ const networkId=97;
 
   return (
     <Wrapper>
+
       <div className="lading-page relative">
         <div className="wrap wrapWidth flex">
           <div className="dashboard-box">
             <div className="dashboard-header flex items-center justify-between gap-3">
               <h1 className="heading">Dashboard</h1>
               <UserProfile />
+              
             </div>
             <hr class="w-full border-black" />
             <div className="d-list flex flex-col">
@@ -207,24 +216,31 @@ const networkId=97;
               <div className="d-link mt-10">
                 <p className="d-par">Referral Link : {window.location.origin}/auth/register/?ref={regAddress?regAddress.slice(0,4)+"...."+regAddress.slice(38,42):"kindly connect"}</p>
                 <CopyToClipboard text={`${window.location.origin}/auth/register/?ref=${regAddress}`} >
-                        <button className="copy-icon flex items-center justify-center" onClick={notify}>
-                          <PiCopySimpleFill color='white' className=' text-2xl'  />
+                        <button className="copy-icon flex items-center justify-center" >
+                          <PiCopySimpleFill color='white' className=' text-2xl'  onClick={notify}/>
                         </button>
 
                 </CopyToClipboard>  
+
               </div>
+
             </div>
+
           </div>
         </div>
 
+                        <ToastContainer/>
       </div>
 
       <Modal open={open} onClose={() => setOpen(false)}>
         <WithdrawModal withdraw={withdraw} />
       </Modal>
-      <ToastContainer />
+
+      {loader && <Loader />}
 
     </Wrapper>
+    
+
   );
 };
 
